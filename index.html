@@ -1,204 +1,3 @@
-<!DOCTYPE html>
-<html lang="ca">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>CATLingo - Cròniques de Catalunya</title>
-<meta name="description" content="RPG per aprendre català jugant">
-<meta name="theme-color" content="#C8102E">
-<meta name="background-color" content="#0a0a0f">
-
-<link rel="manifest" href="/manifest.json">
-<link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="/assets/icons/icon-512.png">
-<link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="CATLingo">
-
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: #0a0a0f;
-  color: #fff;
-  padding-bottom: 80px;
-}
-.header {
-  background: linear-gradient(135deg, #FFD700 0%, #C8102E 100%);
-  padding: 20px;
-  text-align: center;
-  border-bottom: 2px solid #6B4F3A;
-}
-.header h1 {
-  font-size: 22px;
-  margin-bottom: 5px;
-  color: #0a0a0f;
-  font-weight: 800;
-}
-.coins {
-  font-size: 18px;
-  font-weight: bold;
-  color: #0a0a0f;
-}
-.stats {
-  font-size: 12px;
-  color: #0a0a0f;
-  margin-top: 5px;
-}
-.tab-content { display: none; padding: 20px; }
-.tab-content.active { display: block; }
-.tabs {
-  display: flex;
-  background: #1a1a24;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  border-top: 1px solid #333;
-  z-index: 1000;
-}
-.tab-btn {
-  flex: 1;
-  padding: 12px;
-  background: none;
-  border: none;
-  color: #888;
-  font-size: 12px;
-  cursor: pointer;
-}
-.tab-btn.active {
-  color: #FFD700;
-  background: rgba(255, 215, 0, 0.1);
-  border-top: 2px solid #FFD700;
-}
-.card {
-  background: #1a1a24;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 15px;
-  border: 1px solid #2a2a35;
-}
-.btn {
-  background: linear-gradient(135deg, #C8102E 0%, #A60A24 100%);
-  color: #fff;
-  border: 1px solid #FFD700;
-  padding: 12px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  width: 100%;
-  margin-top: 15px;
-}
-.btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.opcio {
-  background: #2a2a35;
-  padding: 15px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.opcio:hover { background: #353542; }
-.opcio.correcta { background: #22c55e; color: white; }
-.opcio.incorrecta { background: #ef4444; color: white; }
-.capitol-card {
-  background: linear-gradient(135deg, #1a1a24 0%, #2a2a35 100%);
-  border: 2px solid #C8102E;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 15px;
-}
-.capitol-card.bloquejat { opacity: 0.4; filter: grayscale(100%); }
-.capitol-card.completat { border-color: #FFD700; box-shadow: 0 0 20px rgba(255,215,0,0.3); }
-.capitol-icona { font-size: 48px; text-align: center; margin-bottom: 10px; }
-.npc-box {
-  background: #2a2a35;
-  padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 15px;
-  border-left: 4px solid #FFD700;
-}
-.npc-nom { color: #FFD700; font-weight: bold; margin-bottom: 5px; }
-.gremi-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-}
-.gremi-item {
-  background: #1a1a24;
-  padding: 15px;
-  border-radius: 12px;
-  text-align: center;
-  border: 1px solid #2a2a35;
-}
-.gremi-item.locked { opacity: 0.4; }
-.sub-tabs { display: flex; gap: 8px; margin-bottom: 15px; }
-.sub-tab-btn {
-  flex: 1;
-  padding: 10px;
-  background: #1a1a24;
-  border: 1px solid #2a2a35;
-  color: #888;
-  border-radius: 8px;
-  cursor: pointer;
-}
-.sub-tab-btn.active {
-  background: #FFD700;
-  color: #0a0a0f;
-  font-weight: bold;
-}
-</style>
-</head>
-<body>
-
-<div class="header">
-  <h1 id="app-titol">🏴 CATLingo</h1>
-  <div class="coins" id="coins">🪙 0 <span id="text-monedes">Monedes</span></div>
-  <div class="stats" id="stats"></div>
-</div>
-
-<div id="tab-mapa" class="tab-content active">
-  <h2 id="text-mon">🗺️ Mapa de Catalunya</h2>
-  <div id="mapa-contenidor"></div>
-</div>
-
-<div id="tab-missio" class="tab-content">
-  <div id="npc-box" class="npc-box" style="display:none;">
-    <div class="npc-nom" id="npc-nom"></div>
-    <div id="npc-text"></div>
-  </div>
-  <div class="card">
-    <h3 id="missio-titol">Selecciona una missió al mapa</h3>
-    <div id="missio-escenari"></div>
-    <div id="missio-opcions"></div>
-    <div id="missio-feedback" style="text-align:center; margin:15px 0; font-weight:bold;"></div>
-  </div>
-</div>
-
-<div id="tab-gremi" class="tab-content">
-  <div class="sub-tabs">
-    <button class="sub-tab-btn active" onclick="mostrarGremi('personatges', event)">👥 Personatges</button>
-    <button class="sub-tab-btn" onclick="mostrarGremi('objectes', event)">🎒 Objectes</button>
-    <button class="sub-tab-btn" onclick="mostrarGremi('llegendes', event)">📜 Llegendes</button>
-  </div>
-  <div id="gremi-contenidor" class="gremi-grid"></div>
-</div>
-
-<div id="tab-botiga" class="tab-content">
-  <div class="card">
-    <h3 id="text-botiga">🛒 Botiga</h3>
-    <div id="botiga-contenidor" class="gremi-grid"></div>
-  </div>
-</div>
-
-<div class="tabs">
-  <button class="tab-btn active" onclick="canviarTab('mapa', event)">🗺️ <span id="tab-mapa-txt">Món</span></button>
-  <button class="tab-btn" onclick="canviarTab('missio', event)">📜 <span id="tab-missio-txt">Missió</span></button>
-  <button class="tab-btn" onclick="canviarTab('gremi', event)">🏛️ <span id="tab-gremi-txt">Gremi</span></button>
-  <button class="tab-btn" onclick="canviarTab('botiga', event)">🛒 <span id="tab-botiga-txt">Botiga</span></button>
-</div>
-
 <script>
 const LANGS = {
   es: {
@@ -240,33 +39,13 @@ let estat = {
 
 const CAPITOLS = [
   {
-    id: "lleida",
-    nom: "Lleida",
-    icona: "🍎",
-    desbloquejat: true,
-    desc: "Terra de fruita i gent directa",
-    premi: {id:"pa_tomaquet", emoji:"🍅", nom:"Pa amb tomàquet"},
-    passos: [
-      {
-        npc: {id:"pere", nom:"Pere el Fruiter", frase:"Ei tu! Què vols? No tinc tot el dia."},
-        escenari: "Arribes a la parada. Fa olor de préssec.",
-        pregunta: "Com demanes préssecs en català?",
-        keywords_correctes: ["presecs", "vull", "si us plau"],
-        opcions: [
-          {text:"Quiero melocotones", correcte:false, feedback_ca:"Aquí parlem català", feedback_es:"Aquí hablamos catalán", seny:0, rauxa:0, coins:0},
-          {text:"Vull préssecs, si us plau", correcte:true, feedback_ca:"Perfecte!", feedback_es:"Perfecto!", seny:1, rauxa:0, coins:20}
-        ]
-      }
-    ]
-  },
-  {
     id: "bcn_01",
     nom: "Barcelona - La primera nit al Born",
     icona: "🏙️",
     desbloquejat: true,
     desc: "Arribes a Barcelona sense saber ni un 'bon dia'. Laia et farà parlar.",
     premi: {id:"paraula_seny", emoji:"⚖️", nom:"Paraula Ancestral: Seny"},
-    passos: [] // Se carga desde /data/capitol_01_barcelona.json
+    archivo: "capitol_01_barcelona"
   }
 ];
 
@@ -298,14 +77,17 @@ function canviarTab(tab, e) {
   if(tab === 'botiga') carregarBotiga();
 }
 
-async function carregarCapitol(id) {
+async function carregarCapitol(nombreArchivo) {
   try {
-    const res = await fetch(`/data/${id}.json`);
+    const res = await fetch(`./data/${nombreArchivo}.json`);
+    if (!res.ok) throw new Error('Archivo no encontrado');
     estat.capitolActual = await res.json();
     estat.pasActual = 0;
     carregarPas();
+    canviarTab('missio', {target: {closest: () => document.querySelector('.tab-btn:nth-child(2)')}});
   } catch(e) {
-    alert('Error carregant capítol');
+    alert('Error carregant capítol: ' + e.message);
+    console.error(e);
   }
 }
 
@@ -315,7 +97,7 @@ function carregarMapa() {
 
   CAPITOLS.forEach(capitol => {
     const completat = estat.capitolsCompletats.includes(capitol.id);
-    const desbloquejat = capitol.desbloquejat || estat.capitolsCompletats.includes(capitol.requereix);
+    const desbloquejat = capitol.desbloquejat;
 
     const div = document.createElement('div');
     div.className = 'capitol-card' + (completat? ' completat' : '') + (!desbloquejat? ' bloquejat' : '');
@@ -332,189 +114,144 @@ function carregarMapa() {
 }
 
 function entrarCapitol(id) {
-  if(id === 'bcn_01') {
-    carregarCapitol('capitol_01_barcelona');
+  const capitol = CAPITOLS.find(c => c.id === id);
+  if (!capitol) return;
+
+  if (capitol.archivo) {
+    carregarCapitol(capitol.archivo);
   } else {
-    const capitol = CAPITOLS.find(c => c.id === id);
     estat.capitolActual = capitol;
     estat.pasActual = 0;
     carregarPas();
+    canviarTab('missio', {target: {closest: () => document.querySelector('.tab-btn:nth-child(2)')}});
   }
-  canviarTab('missio', {target: document.querySelector('[onclick*="missio"]')});
 }
 
 function carregarPas() {
-  if(!estat.capitolActual ||!estat.capitolActual.passos[estat.pasActual]) return;
+  if (!estat.capitolActual) return;
 
   const pas = estat.capitolActual.passos[estat.pasActual];
+  if (!pas) {
+    completarCapitol();
+    return;
+  }
+
   document.getElementById('npc-box').style.display = 'block';
   document.getElementById('npc-nom').textContent = pas.npc.nom;
   document.getElementById('npc-text').textContent = pas.npc.frase;
-  document.getElementById('missio-titol').textContent = estat.capitolActual.nom;
+  document.getElementById('missio-titol').textContent = pas.pregunta;
   document.getElementById('missio-escenari').textContent = pas.escenari;
 
   const opcionsDiv = document.getElementById('missio-opcions');
   opcionsDiv.innerHTML = '';
-  pas.opcions.forEach((op, i) => {
+
+  pas.opcions.forEach((opcio, i) => {
     const div = document.createElement('div');
     div.className = 'opcio';
-    div.textContent = op.text;
-    div.onclick = () => respondre(op, div);
+    div.textContent = opcio.text;
+    div.onclick = () => seleccionarOpcio(i);
     opcionsDiv.appendChild(div);
   });
 
   document.getElementById('missio-feedback').textContent = '';
 }
 
-function respondre(opcio, element) {
-  const inputUsuari = opcio.text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+function seleccionarOpcio(idx) {
   const pas = estat.capitolActual.passos[estat.pasActual];
-  const keywords = pas.keywords_correctes.map(k => k.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
-  const encerta = keywords.some(k => inputUsuari.includes(k));
+  const opcio = pas.opcions[idx];
 
-  document.querySelectorAll('.opcio').forEach(o => o.style.pointerEvents = 'none');
+  const feedback = idioma === 'ca'? opcio.feedback_ca : opcio.feedback_es;
+  document.getElementById('missio-feedback').textContent = feedback;
 
-  if(encerta) {
-    element.classList.add('correcta');
-    document.getElementById('missio-feedback').textContent = idioma === 'es'? opcio.feedback_es : opcio.feedback_ca;
-    document.getElementById('missio-feedback').style.color = '#22c55e';
+  estat.monedes += opcio.coins || 0;
+  estat.seny += opcio.seny || 0;
+  estat.rauxa += opcio.rauxa || 0;
 
-    estat.monedes += opcio.coins || 0;
-    estat.seny += opcio.seny || 0;
-    estat.rauxa += opcio.rauxa || 0;
-    guardar();
-    actualizarMonedes();
-    mostrarStats();
+  guardarEstat();
+  actualitzarUI();
 
-    setTimeout(() => {
-      estat.pasActual++;
-      if(estat.pasActual >= estat.capitolActual.passos.length) {
-        completarCapitol();
-      } else {
-        carregarPas();
-      }
-    }, 1500);
-  } else {
-    element.classList.add('incorrecta');
-    document.getElementById('missio-feedback').textContent = LANG.incorrecte + pas.keywords_correctes[0];
-    document.getElementById('missio-feedback').style.color = '#ef4444';
-    setTimeout(() => carregarPas(), 2000);
-  }
+  setTimeout(() => {
+    estat.pasActual++;
+    carregarPas();
+  }, 1500);
 }
 
 function completarCapitol() {
-  if(!estat.capitolsCompletats.includes(estat.capitolActual.id)) {
+  if (!estat.capitolsCompletats.includes(estat.capitolActual.id)) {
     estat.capitolsCompletats.push(estat.capitolActual.id);
   }
-  if(estat.capitolActual.premi &&!estat.objectes.includes(estat.capitolActual.premi.id)) {
-    estat.objectes.push(estat.capitolActual.premi.id);
-  }
-  estat.monedes += 100;
-  guardar();
-  alert(`🎉 ${estat.capitolActual.premi.emoji} ${estat.capitolActual.premi.nom} desbloquejat!`);
-  canviarTab('mapa', {target: document.querySelector('[onclick*="mapa"]')});
+
+  alert(`Capítol completat! Has guanyat: ${estat.capitolActual.premi.emoji} ${estat.capitolActual.premi.nom}`);
+
+  document.getElementById('npc-box').style.display = 'none';
+  document.getElementById('missio-titol').textContent = 'Selecciona una missió al mapa';
+  document.getElementById('missio-escenari').textContent = '';
+  document.getElementById('missio-opcions').innerHTML = '';
+  document.getElementById('missio-feedback').textContent = '';
+
+  guardarEstat();
+  carregarMapa();
 }
 
-function mostrarGremi(seccio, e) {
-  const cont = document.getElementById('gremi-contenidor');
-  cont.innerHTML = '';
-
-  document.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
-  e.target.classList.add('active');
-
-  if(seccio === 'personatges') {
-    const npcIds = ['pere', 'carme', 'marc', 'laia'];
-    npcIds.forEach(n => {
-      const trobat = estat.capitolsCompletats.some(c => {
-        const cap = CAPITOLS.find(cap => cap.id === c);
-        return cap && cap.passos.some(p => p.npc && p.npc.id === n);
-      });
-      if(trobat) {
-        const nom = n === 'pere'? 'Pere el Fruiter' : n === 'carme'? 'Carme la Peixatera' : n === 'marc'? 'Marc el Guardià' : 'Laia';
-        cont.innerHTML += `<div class="gremi-item">👤<br>${nom}</div>`;
-      }
-    });
-  }
-
-  if(seccio === 'objectes') {
-    CAPITOLS.forEach(c => {
-      if(c.premi && estat.objectes.includes(c.premi.id)) {
-        cont.innerHTML += `<div class="gremi-item">${c.premi.emoji}<br>${c.premi.nom}</div>`;
-      }
-    });
-  }
-
-  if(seccio === 'llegendes') {
-    cont.innerHTML = `<div class="gremi-item">🐉<br>La llegenda del Drac</div>`;
-  }
-}
-
-function carregarBotiga() {
-  const cont = document.getElementById('botiga-contenidor');
-  cont.innerHTML = '';
-  BOTIGA_ITEMS.forEach(item => {
-    const teDiners = estat.monedes >= item.preu;
-    cont.innerHTML += `
-      <div class="gremi-item ${!teDiners?'locked':''}">
-        ${item.emoji}<br>${item.nom}<br>${item.preu}🪙
-        <button class="btn" ${!teDiners?'disabled':''} onclick="comprar('${item.id}',${item.preu})">Comprar</button>
-      </div>
-    `;
-  });
-}
-
-function comprar(id, preu) {
-  estat.monedes -= preu;
-  estat.objectes.push(id);
-  guardar();
-  actualizarMonedes();
-  carregarBotiga();
-}
-
-function actualizarMonedes() {
-  document.getElementById('coins').innerHTML = `🪙 ${estat.monedes} <span id="text-monedes">${LANG.monedes}</span>`;
-}
-
-function mostrarStats() {
-  document.getElementById('stats').textContent = `Seny: ${estat.seny} | Rauxa: ${estat.rauxa}`;
-}
-
-function guardar() {
+function guardarEstat() {
   localStorage.setItem('cat_monedes', estat.monedes);
   localStorage.setItem('cat_completats', JSON.stringify(estat.capitolsCompletats));
   localStorage.setItem('cat_objectes', JSON.stringify(estat.objectes));
   localStorage.setItem('cat_seny', estat.seny);
   localStorage.setItem('cat_rauxa', estat.rauxa);
-  localStorage.setItem('cat_capitol', JSON.stringify({
-    id: estat.capitolActual?.id || null,
-    pas: estat.pasActual || 0
-  }));
 }
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js');
+function actualitzarUI() {
+  document.getElementById('coins').innerHTML = `🪙 ${estat.monedes} <span id="text-monedes">${LANG.monedes}</span>`;
+  document.getElementById('stats').textContent = `Seny: ${estat.seny} | Rauxa: ${estat.rauxa}`;
+}
+
+function mostrarGremi(tab, e) {
+  document.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
+  if(e) e.target.classList.add('active');
+
+  const cont = document.getElementById('gremi-contenidor');
+  cont.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:#888;">Pròximament</div>`;
+}
+
+function carregarBotiga() {
+  const cont = document.getElementById('botiga-contenidor');
+  cont.innerHTML = '';
+
+  BOTIGA_ITEMS.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'gremi-item';
+    div.innerHTML = `
+      <div style="font-size:32px;">${item.emoji}</div>
+      <div>${item.nom}</div>
+      <div style="color:#FFD700;">${item.preu} 🪙</div>
+      <button class="btn" onclick="comprar('${item.id}', ${item.preu})">Comprar</button>
+    `;
+    cont.appendChild(div);
   });
 }
 
-function iniciar() {
-  const capitolGuardat = JSON.parse(localStorage.getItem('cat_capitol'));
-  if(capitolGuardat && capitolGuardat.id) {
-    const cap = CAPITOLS.find(c => c.id === capitolGuardat.id);
-    if(cap) {
-      estat.capitolActual = cap;
-      estat.pasActual = capitolGuardat.pas;
-      canviarTab('missio', {target: document.querySelector('[onclick*="missio"]')});
-      carregarPas();
-    }
+function comprar(id, preu) {
+  if (estat.monedes < preu) {
+    alert('No tens prou monedes');
+    return;
   }
-  aplicarIdioma();
-  actualizarMonedes();
-  mostrarStats();
-  carregarMapa();
+  estat.monedes -= preu;
+  estat.objectes.push(id);
+  guardarEstat();
+  actualitzarUI();
+  alert('Comprat!');
 }
 
-iniciar();
+// Init
+aplicarIdioma();
+actualitzarUI();
+carregarMapa();
+
+// Registrar SW
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js');
+}
 </script>
 </body>
-</html>
+>/html>
