@@ -1,0 +1,73 @@
+{
+  "id": "bcn_01",
+  "nom": "Barcelona - La primera nit al Born",
+  "icona": "🏙️",
+  "desbloquejat": true,
+  "desc": "Arribes a Barcelona sense saber ni un 'bon dia'. Laia et farà parlar.",
+  "premi": { "id": "paraula_seny", "emoji": "⚖️", "nom": "Paraula Ancestral: Seny" },
+  "passos": [
+    {
+      "id": "bcn_01",
+      "npc": { "id": "laia", "nom": "Laia", "frase": "Ostres, un foraster! Parles català o et salvo amb espanyol?" },
+      "escenari": "Estació de Sants. Laia et mira amb una bici al costat.",
+      "pregunta": "Com saludes?",
+      "keywords_correctes": ["hola", "bon dia", "bona tarda", "bona nit"],
+      "opcions": [
+        { "text": "Hola", "feedback_ca": "Perfecte!", "feedback_es": "Perfecto!", "seny": 1, "rauxa": 0, "coins": 10 },
+        { "text": "Bon dia", "feedback_ca": "Molt bé!", "feedback_es": "Muy bien!", "seny": 1, "rauxa": 0, "coins": 10 },
+        { "text": "Hola, que tal", "feedback_ca": "Vale, però diu 'com estàs' en català", "feedback_es": "Vale, pero di 'com estàs' en catalán", "seny": 0, "rauxa": 1, "coins": 5 }
+      ]
+    },
+    {
+      "id": "bcn_02",
+      "npc": { "id": "laia", "nom": "Laia", "frase": "I tu com et dius? Jo soc la Laia." },
+      "escenari": "Laia et dona la mà.",
+      "pregunta": "Presenta't.",
+      "keywords_correctes": ["em dic", "soc", "sóc"],
+      "opcions": [
+        { "text": "Em dic Marc", "feedback_ca": "Ben fet!", "feedback_es": "Bien hecho!", "seny": 1, "rauxa": 0, "coins": 10 },
+        { "text": "Sóc en Marc", "feedback_ca": "Molt bé, així es diu!", "feedback_es": "Muy bien, así se dice!", "seny": 1, "rauxa": 0, "coins": 10 },
+        { "text": "Me llamo Marc", "feedback_ca": "Aquí parlem català. Prova: 'Em dic Marc'", "feedback_es": "Aquí hablamos catalán. Prueba: 'Em dic Marc'", "seny": 0, "rauxa": 0, "coins": 0 }
+      ]
+    },
+    {
+      "id": "bcn_03",
+      "npc": { "id": "laia", "nom": "Laia", "frase": "Vols anar al Born amb mi? Agafem el metro." },
+      "escenari": "Sortiu de l'estació.",
+      "pregunta": "Com dius que sí?",
+      "keywords_correctes": ["sí", "vale", "somhi", "anem", "d'acord"],
+      "opcions": [
+        { "text": "Sí, anem", "feedback_ca": "Som-hi!", "feedback_es": "Vamos!", "seny": 1, "rauxa": 1, "coins": 15 },
+        { "text": "Vale, vamos", "feedback_ca": "Vale, però 'anem' és més català", "feedback_es": "Vale, pero 'anem' es más catalán", "seny": 0, "rauxa": 1, "coins": 5 }
+      ]
+    },
+    {
+      "id": "bcn_04",
+      "npc": { "id": "taquilla", "nom": "Màquina de bitllets", "frase": "Selecciona destí." },
+      "escenari": "Metro de Sants. Has de comprar un bitllet.",
+      "pregunta": "Com demanes un bitllet?",
+      "keywords_correctes": ["bitllet", "tiquet", "vull", "un", "senzill"],
+      "opcions": [
+        { "text": "Vull un bitllet senzill", "feedback_ca": "Correcte!", "feedback_es": "Correcto!", "seny": 1, "rauxa": 0, "coins": 20 },
+        { "text": "Vull un tiquet senzill", "feedback_ca": "També val! 'Tiquet' s'entén", "feedback_es": "También vale! 'Tiquet' se entiende", "seny": 0, "rauxa": 1, "coins": 15 },
+        { "text": "Un ticket por favor", "feedback_ca": "Aquí diem 'bitllet'. Prova-ho en català", "feedback_es": "Aquí decimos 'bitllet'. Pruébalo en catalán", "seny": -1, "rauxa": 0, "coins": 0 }
+      ]
+    },
+    {
+      "id": "bcn_05",
+      "npc": { "id": "laia", "nom": "Laia", "frase": "On baixem? A Jaume I per anar al Born." },
+      "escenari": "Dins del metro.",
+      "pregunta": "Com preguntes 'dónde bajamos'?",
+      "keywords_correctes": ["on", "baixem", "baixar", "parada"],
+      "opcions": [
+        { "text": "On baixem?", "feedback_ca": "Exacte!", "feedback_es": "Exacto!", "seny": 1, "rauxa": 0, "coins": 15 },
+        { "text": "A quina parada baixem?", "feedback_ca": "Molt bé, més específic!", "feedback_es": "Muy bien, más específico!", "seny": 2, "rauxa": 0, "coins": 20 }
+      ]
+    }
+  ],
+  "desbloqueja": {
+    "zona": "Girona",
+    "item": "mapa_barri_gotic",
+    "esdeveniment": "Sónar 2026"
+  }
+        }
