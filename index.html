@@ -92,8 +92,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 
 <script>
 const LANGS = {
-  es: { app_titol: "CATLingo - Crónicas de Cataluña", monedes: "Monedas", tab_mapa: "Mundo", tab_missio: "Misión", tab_gremi: "Gremio", tab_botiga: "Tienda", text_mon: "🗺️ Mapa de Cataluña", text_botiga: "🛒 Tienda", entrar: "Entrar", bloquejat: "Bloqueado", completat: "Completado", repetir: "Repetir", volver_mapa: "Volver al mapa", mision_completada: "¡Misión completada!" },
-  ca: { app_titol: "CATLingo - Cròniques de Catalunya", monedes: "Monedes", tab_mapa: "Món", tab_missio: "Missió", tab_gremi: "Gremi", tab_botiga: "Botiga", text_mon: "🗺️ Mapa de Catalunya", text_botiga: "🛒 Botiga", entrar: "Entrar", bloquejat: "Bloquejat", completat: "Completat", repetir: "Repetir", volver_mapa: "Tornar al mapa", mision_completada: "Missió completada!" }
+  es: { app_titol: "CATLingo - Crónicas de Cataluña", monedes: "Monedas", tab_mapa: "Mundo", tab_missio: "Misión", tab_gremi: "Gremio", tab_botiga: "Tienda", text_mon: "🗺️ Mapa de Cataluña", text_botiga: "🛒 Tienda", entrar: "Entrar", bloquejat: "Bloqueado", completat: "Completado", repetir: "Repetir", volver_mapa: "Volver al mapa", mision_completada: "¡Misión completada!", repas_rapido: "Repàs Ràpid", repas_titulo: "Repàs Ràpid - 5 Preguntas" },
+  ca: { app_titol: "CATLingo - Cròniques de Catalunya", monedes: "Monedes", tab_mapa: "Món", tab_missio: "Missió", tab_gremi: "Gremi", tab_botiga: "Botiga", text_mon: "🗺️ Mapa de Catalunya", text_botiga: "🛒 Botiga", entrar: "Entrar", bloquejat: "Bloquejat", completat: "Completat", repetir: "Repetir", volver_mapa: "Tornar al mapa", mision_completada: "Missió completada!", repas_rapido: "Repàs Ràpid", repas_titulo: "Repàs Ràpid - 5 Preguntes" }
 };
 
 let idioma = localStorage.getItem('cat_idioma') || 'es';
@@ -106,59 +106,22 @@ let estat = {
   seny: parseInt(localStorage.getItem('cat_seny')) || 0,
   rauxa: parseInt(localStorage.getItem('cat_rauxa')) || 0,
   capitolActual: null,
-  pasActual: 0
+  pasActual: 0,
+  fallades: JSON.parse(localStorage.getItem('cat_fallades')) || []
 };
 
 const CAPITOLS = [
-  {
-    id: "bcn_01",
-    nom: "Barcelona - La primera nit al Born",
-    icona: "🏙️",
-    desbloquejat: true,
-    desc: "Arribes a Barcelona sense saber ni un 'bon dia'.",
-    premi: {id:"paraula_seny", emoji:"⚖️", nom:"Seny"},
-    archivo: "capitol_01_barcelona"
-  },
-  {
-    id: "gir_01",
-    nom: "Girona - El Barri Jueu",
-    icona: "🏰",
-    desbloquejat: false,
-    desc: "Carrers estrets. Català més ràpid. T'hauràs de guanyar la confiança.",
-    premi: {id:"paraula_rauxa", emoji:"🔥", nom:"Rauxa"},
-    archivo: "capitol_02_girona",
-    requereix: "bcn_01"
-  },
-  {
-    id: "tar_01",
-    nom: "Tarragona - L'Amfiteatre",
-    icona: "🏛️",
-    desbloquejat: false,
-    desc: "Història romana. Passat i condicional.",
-    premi: {id:"paraula_historia", emoji:"📜", nom:"Memòria"},
-    archivo: "capitol_03_tarragona",
-    requereix: "gir_01"
-  },
-  {
-    id: "lle_01",
-    nom: "Lleida - La Segarra",
-    icona: "🌾",
-    desbloquejat: false,
-    desc: "Camp i pobles. Català rural i expressions de pagès.",
-    premi: {id:"paraula_terra", emoji:"🌱", nom:"Terra"},
-    archivo: "capitol_04_lleida",
-    requereix: "tar_01"
-  },
-  {
-    id: "vic_01",
-    nom: "Vic - El Mercat Medieval",
-    icona: "🏪",
-    desbloquejat: false,
-    desc: "Comerç i regateig. Subjuntiu i imperatiu.",
-    premi: {id:"paraula_comerc", emoji:"💰", nom:"Comerç"},
-    archivo: "capitol_05_vic",
-    requereix: "lle_01"
-  }
+  { id: "bcn_01", nom: "Barcelona - La primera nit al Born", icona: "🏙️", desbloquejat: true, desc: "Arribes a Barcelona sense saber ni un 'bon dia'.", premi: {id:"paraula_seny", emoji:"⚖️", nom:"Seny"}, archivo: "capitol_01_barcelona" },
+  { id: "gir_01", nom: "Girona - El Barri Jueu", icona: "🏰", desbloquejat: false, desc: "Carrers estrets. Català més ràpid. T'hauràs de guanyar la confiança.", premi: {id:"paraula_rauxa", emoji:"🔥", nom:"Rauxa"}, archivo: "capitol_02_girona", requereix: "bcn_01" },
+  { id: "tar_01", nom: "Tarragona - L'Amfiteatre", icona: "🏛️", desbloquejat: false, desc: "Història romana. Passat i condicional.", premi: {id:"paraula_historia", emoji:"📜", nom:"Memòria"}, archivo: "capitol_03_tarragona", requereix: "gir_01" },
+  { id: "lle_01", nom: "Lleida - La Segarra", icona: "🌾", desbloquejat: false, desc: "Camp i pobles. Català rural i expressions de pagès.", premi: {id:"paraula_terra", emoji:"🌱", nom:"Terra"}, archivo: "capitol_04_lleida", requereix: "tar_01" },
+  { id: "vic_01", nom: "Vic - El Mercat Medieval", icona: "🏪", desbloquejat: false, desc: "Comerç i regateig. Subjuntiu i imperatiu.", premi: {id:"paraula_comerc", emoji:"💰", nom:"Comerç"}, archivo: "capitol_05_vic", requereix: "lle_01" },
+  
+  { id: "tar_02", nom: "Tarragona - El Mercat Central", icona: "🐟", desbloquejat: false, desc: "Pretèrit imperfet vs perfet.", premi: {id:"paraula_temps", emoji:"⏳", nom:"Temps"}, archivo: "capitol_06_tarragona", requereix: "tar_01" },
+  { id: "gir_02", nom: "Girona - Les Muralles", icona: "🧱", desbloquejat: false, desc: "Relatius: que, qui, on, quan.", premi: {id:"paraula_relatiu", emoji:"🔗", nom:"Relatiu"}, archivo: "capitol_07_girona", requereix: "gir_01" },
+  { id: "bcn_02", nom: "Barcelona - El Raval", icona: "🌆", desbloquejat: false, desc: "Pronoms febles.", premi: {id:"paraula_pronom", emoji:"👤", nom:"Pronom"}, archivo: "capitol_08_barcelona", requereix: "bcn_01" },
+  { id: "lle_02", nom: "Lleida - La Fruita", icona: "🍎", desbloquejat: false, desc: "Condicionals i si.", premi: {id:"paraula_si", emoji:"❓", nom:"Si"}, archivo: "capitol_09_lleida", requereix: "lle_01" },
+  { id: "vic_02", nom: "Vic - La Catedral", icona: "⛪", desbloquejat: false, desc: "Passiva i impersonal.", premi: {id:"paraula_passiva", emoji:"🏛️", nom:"Passiva"}, archivo: "capitol_10_vic", requereix: "vic_01" }
 ]
 
 const BOTIGA_ITEMS = [
@@ -166,6 +129,23 @@ const BOTIGA_ITEMS = [
   {id:"sardana", emoji:"💃", nom:"Sardana", preu:80},
   {id:"gegant", emoji:"🎭", nom:"Gegant", preu:120}
 ];
+
+// B. Seny/Rauxa afectan el diálogo
+function aplicarCondicionesSenyRauxa(pas, capitolId) {
+  const pasMod = JSON.parse(JSON.stringify(pas));
+
+  if (capitolId === 'vic_01' && pasMod.npc.id === 'vell' && estat.seny > 70) {
+    pasMod.npc.frase = "A veure, tranquil... te ho dic a poc a poc: No compri res sense regatejar abans.";
+    pasMod.pistaExtra = "Pista: 'No compri' va amb subjuntiu per consell.";
+  }
+
+  if (capitolId === 'gir_01' && pasMod.npc.id === 'chaval' && estat.rauxa > 70) {
+    pasMod.npc.frase = "Ostres tiu, vine per aquí que t'ensenyo un lloc flipant!";
+    pasMod.escenari = "El chaval et porta a un carreró secret. Desbloquejas 'Carrer Amagat'.";
+  }
+
+  return pasMod;
+}
 
 function aplicarIdioma() {
   document.getElementById('app-titol').textContent = LANG.app_titol;
@@ -186,6 +166,7 @@ function canviarTab(tab, e) {
   if(tab === 'mapa') carregarMapa();
   if(tab === 'gremi') mostrarGremi('personatges', e);
   if(tab === 'botiga') carregarBotiga();
+  if(tab === 'missio') carregarMissioTab();
 }
 
 async function carregarCapitol(nombreArchivo) {
@@ -207,7 +188,6 @@ function carregarMapa() {
 
   CAPITOLS.forEach(capitol => {
     const completat = estat.capitolsCompletats.includes(capitol.id);
-
     let desbloquejat = capitol.desbloquejat;
     if (capitol.requereix) {
       desbloquejat = estat.capitolsCompletats.includes(capitol.requereix);
@@ -235,8 +215,7 @@ function entrarCapitol(id) {
 function repetirCapitol(id) {
   const capitol = CAPITOLS.find(c => c.id === id);
   if (!capitol) return;
-
-  if(confirm(idioma === 'ca'? 'Vols repetir aquesta missió? Perdras el progrés actual.' : '¿Quieres repetir esta misión? Perderás el progreso actual.')) {
+  if(confirm(idioma === 'ca'? 'Vols repetir aquesta missió?' : '¿Quieres repetir esta misión?')) {
     estat.capitolsCompletats = estat.capitolsCompletats.filter(c => c!== id);
     guardarEstat();
     carregarCapitol(capitol.archivo);
@@ -248,15 +227,21 @@ function carregarPas() {
   const pas = estat.capitolActual.passos[estat.pasActual];
   if (!pas) { completarCapitol(); return; }
 
+  const pasMod = aplicarCondicionesSenyRauxa(pas, estat.capitolActual.id);
+
   document.getElementById('npc-box').style.display = 'block';
-  document.getElementById('npc-nom').textContent = pas.npc.nom;
-  document.getElementById('npc-text').textContent = pas.npc.frase;
-  document.getElementById('missio-titol').textContent = pas.pregunta;
-  document.getElementById('missio-escenari').textContent = pas.escenari;
+  document.getElementById('npc-nom').textContent = pasMod.npc.nom;
+  document.getElementById('npc-text').innerHTML = `${pasMod.npc.frase} <span style="cursor:pointer; margin-left:8px;" onclick="parlar('${pasMod.npc.frase.replace(/'/g, "\\'")}')">🔊</span>`;
+  document.getElementById('missio-titol').textContent = pasMod.pregunta;
+  document.getElementById('missio-escenari').textContent = pasMod.escenari;
+
+  if (pasMod.pistaExtra) {
+    document.getElementById('missio-escenari').innerHTML += `<div style="margin-top:10px; color:#FFD700; font-size:14px;">${pasMod.pistaExtra}</div>`;
+  }
 
   const opcionsDiv = document.getElementById('missio-opcions');
   opcionsDiv.innerHTML = '';
-  pas.opcions.forEach((opcio, i) => {
+  pasMod.opcions.forEach((opcio, i) => {
     const div = document.createElement('div');
     div.className = 'opcio';
     div.textContent = opcio.text;
@@ -266,14 +251,31 @@ function carregarPas() {
   document.getElementById('missio-feedback').textContent = '';
 }
 
+// D. Web Speech API
+function parlar(text) {
+  if ('speechSynthesis' in window) {
+    speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'ca-ES';
+    utter.rate = 0.9;
+    speechSynthesis.speak(utter);
+  }
+}
+
 function seleccionarOpcio(idx) {
   const pas = estat.capitolActual.passos[estat.pasActual];
   const opcio = pas.opcions[idx];
   const feedback = idioma === 'ca'? opcio.feedback_ca : opcio.feedback_es;
   document.getElementById('missio-feedback').textContent = feedback;
-  estat.monedes += opcio.coins || 0;
-  estat.seny += opcio.seny || 0;
-  estat.rauxa += opcio.rauxa || 0;
+
+  if (opcio.correcte) {
+    estat.monedes += opcio.coins || 0;
+    estat.seny += opcio.seny || 0;
+    estat.rauxa += opcio.rauxa || 0;
+  } else {
+    estat.fallades.push(pas);
+  }
+
   guardarEstat();
   actualitzarUI();
 
@@ -324,12 +326,70 @@ function tornarMapa() {
   canviarTab('mapa');
 }
 
+// C. Modo Repàs
+function carregarMissioTab() {
+  if (!estat.capitolActual) {
+    document.getElementById('missio-card').innerHTML = `
+      <button class="btn" onclick="iniciarRepas()">${LANG.repas_rapido}</button>
+      <h3 style="margin-top:20px;">${LANG.repas_titulo}</h3>
+      <div id="repas-contenidor"></div>
+    `;
+  }
+}
+
+function iniciarRepas() {
+  let todasPreguntas = [];
+  let capitolsCargados = 0;
+
+  if (estat.capitolsCompletats.length === 0 && estat.fallades.length === 0) {
+    document.getElementById('repas-contenidor').innerHTML = '<p style="text-align:center; color:#888;">Completa un capítol primer</p>';
+    return;
+  }
+
+  estat.capitolsCompletats.forEach(id => {
+    const capitol = CAPITOLS.find(c => c.id === id);
+    if (capitol && capitol.archivo) {
+      fetch(`./data/${capitol.archivo}.json`)
+      .then(r => r.json())
+      .then(data => {
+          todasPreguntas = todasPreguntas.concat(data.passos);
+          capitolsCargados++;
+          if (capitolsCargados === estat.capitolsCompletats.length) {
+            todasPreguntas = [...todasPreguntas,...estat.fallades,...estat.fallades];
+            mostrarRepas(todasPreguntas);
+          }
+        });
+    }
+  });
+
+  if (estat.capitolsCompletats.length === 0) {
+    todasPreguntas = [...estat.fallades,...estat.fallades];
+    mostrarRepas(todasPreguntas);
+  }
+}
+
+function mostrarRepas(preguntas) {
+  const cont = document.getElementById('repas-contenidor');
+  if (!cont) return;
+
+  const repas = preguntas.sort(() => 0.5 - Math.random()).slice(0, 5);
+  cont.innerHTML = '';
+
+  repas.forEach((p, i) => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `<p><strong>${i+1}.</strong> ${p.pregunta}</p><p style="color:#888; font-size:14px;">${p.escenari}</p>`;
+    cont.appendChild(div);
+  });
+}
+
 function guardarEstat() {
   localStorage.setItem('cat_monedes', estat.monedes);
   localStorage.setItem('cat_completats', JSON.stringify(estat.capitolsCompletats));
   localStorage.setItem('cat_objectes', JSON.stringify(estat.objectes));
   localStorage.setItem('cat_seny', estat.seny);
   localStorage.setItem('cat_rauxa', estat.rauxa);
+  localStorage.setItem('cat_fallades', JSON.stringify(estat.fallades));
 }
 
 function actualitzarUI() {
