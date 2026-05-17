@@ -1,0 +1,81 @@
+{
+  "id": "vic_01",
+  "passos": [
+    {
+      "npc": {"id": "venedor", "nom": "Venedor", "frase": "Si volguessis pagar menys, hauries de regatejar."},
+      "escenari": "Estas al mercat medieval de Vic. Un venedor et parla de regatejar.",
+      "pregunta": "Que fas si vols que et baixi el preu?",
+      "opcions": [
+        {
+          "text": "Li demano que em faci descompte.",
+          "correcte": true,
+          "feedback_ca": "Correcte! Subjuntiu despres de 'demano que'.",
+          "feedback_es": "Correcto! Subjuntivo despues de 'pido que'.",
+          "seny": 3,
+          "rauxa": 0,
+          "coins": 45
+        },
+        {
+          "text": "Li demano que em fa descompte.",
+          "correcte": false,
+          "feedback_ca": "Ha de ser subjuntiu: 'faci', no 'fa'.",
+          "feedback_es": "Debe ser subjuntivo: 'haga', no 'hace'.",
+          "seny": 0,
+          "rauxa": 1,
+          "coins": 0
+        }
+      ]
+    },
+    {
+      "npc": {"id": "compradora", "nom": "Compradora", "frase": "Espero que no sigui massa car."},
+      "escenari": "Una dona mira les olles de fang.",
+      "pregunta": "Per que usa subjuntiu?",
+      "opcions": [
+        {
+          "text": "Perque expressa dubte i esperança.",
+          "correcte": true,
+          "feedback_ca": "Exacte! Despres de 'espero que' va subjuntiu.",
+          "feedback_es": "Exacto! Despues de 'espero que' va subjuntivo.",
+          "seny": 3,
+          "rauxa": 0,
+          "coins": 50
+        },
+        {
+          "text": "Perque es una certesa.",
+          "correcte": false,
+          "feedback_ca": "No, 'espero que' indica incertesa, per aixo subjuntiu.",
+          "feedback_es": "No, 'espero que' indica incertidumbre, por eso subjuntivo.",
+          "seny": 0,
+          "rauxa": 0,
+          "coins": 0
+        }
+      ]
+    },
+    {
+      "npc": {"id": "parada", "nom": "Paradaire", "frase": "Mira, toca, pregunta!"},
+      "escenari": "El paradista et crida perque t'acostis.",
+      "pregunta": "En quin mode verbal parla?",
+      "opcions": [
+        {
+          "text": "Imperatiu.",
+          "correcte": true,
+          "feedback_ca": "Si! Imperatiu per donar ordres o animar.",
+          "feedback_es": "Si! Imperativo para dar ordenes o animar.",
+          "seny": 2,
+          "rauxa": 2,
+          "coins": 55
+        },
+        {
+          "text": "Indicatiu.",
+          "correcte": false,
+          "feedback_ca": "No, no descriu, ordena.",
+          "feedback_es": "No, no describe, ordena.",
+          "seny": 0,
+          "rauxa": 0,
+          "coins": 0
+        }
+      ]
+    },
+    {
+      "npc": {"id": "vell", "nom": "Avi", "frase": "No compri res sense regatejar abans."},
+      "
