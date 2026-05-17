@@ -4,6 +4,8 @@ const urlsToCache = [
   '/index.html',
   '/manifest.json',
   '/data/capitol_01_barcelona.json',
+  '/data/capitol_02_girona.json',    // <-- añade esto
+  '/data/capitol_03_tarragona.json', // <-- y esto
   '/assets/icons/icon-192.png',
   '/assets/icons/icon-512.png'
 ];
