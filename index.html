@@ -21,8 +21,12 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .tab-btn.active { color: #FFD700; background: rgba(255, 215, 0, 0.1); border-top: 2px solid #FFD700; }
 .card { background: #1a1a24; border-radius: 12px; padding: 20px; margin-bottom: 15px; border: 1px solid #2a2a35; }
 .btn { background: linear-gradient(135deg, #C8102E 0%, #A60A24 100%); color: #fff; border: 1px solid #FFD700; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 15px; }
+.btn-sec { background: #2a2a35; border: 1px solid #555; }
 .opcio { background: #2a2a35; padding: 15px; margin-bottom: 10px; border-radius: 8px; cursor: pointer; }
+.opcio:hover { background: #3a3a45; }
 .capitol-card { background: linear-gradient(135deg, #1a1a24 0%, #2a2a35 100%); border: 2px solid #C8102E; border-radius: 12px; padding: 20px; margin-bottom: 15px; }
+.capitol-card.completat { border-color: #4CAF50; }
+.capitol-card.bloquejat { opacity: 0.5; }
 .capitol-icona { font-size: 48px; text-align: center; margin-bottom: 10px; }
 .npc-box { background: #2a2a35; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #FFD700; }
 .npc-nom { color: #FFD700; font-weight: bold; margin-bottom: 5px; }
@@ -31,6 +35,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .sub-tabs { display: flex; gap: 8px; margin-bottom: 15px; }
 .sub-tab-btn { flex: 1; padding: 10px; background: #1a1a24; border: 1px solid #2a2a35; color: #888; border-radius: 8px; cursor: pointer; }
 .sub-tab-btn.active { background: #FFD700; color: #0a0a0f; font-weight: bold; }
+.completion-screen { text-align: center; padding: 40px 20px; }
+.completion-screen h2 { font-size: 28px; color: #4CAF50; margin-bottom: 15px; }
+.completion-screen p { font-size: 16px; color: #ccc; margin-bottom: 25px; }
+.completion-buttons { display: flex; gap: 10px; }
 </style>
 </head>
 <body>
@@ -51,7 +59,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <div class="npc-nom" id="npc-nom"></div>
     <div id="npc-text"></div>
   </div>
-  <div class="card">
+  <div class="card" id="missio-card">
     <h3 id="missio-titol">Selecciona una missió al mapa</h3>
     <div id="missio-escenari"></div>
     <div id="missio-opcions"></div>
@@ -84,8 +92,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 
 <script>
 const LANGS = {
-  es: { app_titol: "CATLingo - Crónicas de Cataluña", monedes: "Monedas", tab_mapa: "Mundo", tab_missio: "Misión", tab_gremi: "Gremio", tab_botiga: "Tienda", text_mon: "🗺️ Mapa de Cataluña", text_botiga: "🛒 Tienda", entrar: "Entrar", bloquejat: "Bloqueado" },
-  ca: { app_titol: "CATLingo - Cròniques de Catalunya", monedes: "Monedes", tab_mapa: "Món", tab_missio: "Missió", tab_gremi: "Gremi", tab_botiga: "Botiga", text_mon: "🗺️ Mapa de Catalunya", text_botiga: "🛒 Botiga", entrar: "Entrar", bloquejat: "Bloquejat" }
+  es: { app_titol: "CATLingo - Crónicas de Cataluña", monedes: "Monedas", tab_mapa: "Mundo", tab_missio: "Misión", tab_gremi: "Gremio", tab_botiga: "Tienda", text_mon: "🗺️ Mapa de Cataluña", text_botiga: "🛒 Tienda", entrar: "Entrar", bloquejat: "Bloqueado", completat: "Completado", repetir: "Repetir", volver_mapa: "Volver al mapa", mision_completada: "¡Misión completada!" },
+  ca: { app_titol: "CATLingo - Cròniques de Catalunya", monedes: "Monedes", tab_mapa: "Món", tab_missio: "Missió", tab_gremi: "Gremi", tab_botiga: "Botiga", text_mon: "🗺️ Mapa de Catalunya", text_botiga: "🛒 Botiga", entrar: "Entrar", bloquejat: "Bloquejat", completat: "Completat", repetir: "Repetir", volver_mapa: "Tornar al mapa", mision_completada: "Missió completada!" }
 };
 
 let idioma = localStorage.getItem('cat_idioma') || 'es';
@@ -130,6 +138,26 @@ const CAPITOLS = [
     premi: {id:"paraula_historia", emoji:"📜", nom:"Memòria"},
     archivo: "capitol_03_tarragona",
     requereix: "gir_01"
+  },
+  {
+    id: "lle_01",
+    nom: "Lleida - La Segarra",
+    icona: "🌾",
+    desbloquejat: false,
+    desc: "Camp i pobles. Català rural i expressions de pagès.",
+    premi: {id:"paraula_terra", emoji:"🌱", nom:"Terra"},
+    archivo: "capitol_04_lleida",
+    requereix: "tar_01"
+  },
+  {
+    id: "vic_01",
+    nom: "Vic - El Mercat Medieval",
+    icona: "🏪",
+    desbloquejat: false,
+    desc: "Comerç i regateig. Subjuntiu i imperatiu.",
+    premi: {id:"paraula_comerc", emoji:"💰", nom:"Comerç"},
+    archivo: "capitol_05_vic",
+    requereix: "lle_01"
   }
 ]
 
@@ -176,25 +204,24 @@ async function carregarCapitol(nombreArchivo) {
 function carregarMapa() {
   const cont = document.getElementById('mapa-contenidor');
   cont.innerHTML = '';
-  
+
   CAPITOLS.forEach(capitol => {
     const completat = estat.capitolsCompletats.includes(capitol.id);
-    
-    // Si no tiene 'requereix', usa desbloquejat. Si tiene, mira si ya completaste el anterior
+
     let desbloquejat = capitol.desbloquejat;
     if (capitol.requereix) {
       desbloquejat = estat.capitolsCompletats.includes(capitol.requereix);
     }
-    
+
     const div = document.createElement('div');
-    div.className = 'capitol-card' + (completat ? ' completat' : '') + (!desbloquejat ? ' bloquejat' : '');
+    div.className = 'capitol-card' + (completat? ' completat' : '') + (!desbloquejat? ' bloquejat' : '');
     div.innerHTML = `
       <div class="capitol-icona">${capitol.icona}</div>
       <h3>${capitol.nom}</h3>
       <p>${capitol.desc}</p>
-      ${completat ? '✓ Completat' : ''}
-      ${desbloquejat && !completat ? `<button class="btn" onclick="entrarCapitol('${capitol.id}')">${LANG.entrar}</button>` : ''}
-      ${!desbloquejat ? `<p style="color:#888; margin-top:10px;">${LANG.bloquejat}</p>` : ''}
+      ${completat? `✓ ${LANG.completat} <button class="btn btn-sec" style="margin-top:10px;" onclick="repetirCapitol('${capitol.id}'); event.stopPropagation()">${LANG.repetir}</button>` : ''}
+      ${desbloquejat &&!completat? `<button class="btn" onclick="entrarCapitol('${capitol.id}')">${LANG.entrar}</button>` : ''}
+      ${!desbloquejat? `<p style="color:#888; margin-top:10px;">${LANG.bloquejat}</p>` : ''}
     `;
     cont.appendChild(div);
   });
@@ -205,15 +232,28 @@ function entrarCapitol(id) {
   if (capitol && capitol.archivo) carregarCapitol(capitol.archivo);
 }
 
+function repetirCapitol(id) {
+  const capitol = CAPITOLS.find(c => c.id === id);
+  if (!capitol) return;
+
+  if(confirm(idioma === 'ca'? 'Vols repetir aquesta missió? Perdras el progrés actual.' : '¿Quieres repetir esta misión? Perderás el progreso actual.')) {
+    estat.capitolsCompletats = estat.capitolsCompletats.filter(c => c!== id);
+    guardarEstat();
+    carregarCapitol(capitol.archivo);
+  }
+}
+
 function carregarPas() {
   if (!estat.capitolActual) return;
   const pas = estat.capitolActual.passos[estat.pasActual];
   if (!pas) { completarCapitol(); return; }
+
   document.getElementById('npc-box').style.display = 'block';
   document.getElementById('npc-nom').textContent = pas.npc.nom;
   document.getElementById('npc-text').textContent = pas.npc.frase;
   document.getElementById('missio-titol').textContent = pas.pregunta;
   document.getElementById('missio-escenari').textContent = pas.escenari;
+
   const opcionsDiv = document.getElementById('missio-opcions');
   opcionsDiv.innerHTML = '';
   pas.opcions.forEach((opcio, i) => {
@@ -236,21 +276,52 @@ function seleccionarOpcio(idx) {
   estat.rauxa += opcio.rauxa || 0;
   guardarEstat();
   actualitzarUI();
-  setTimeout(() => { estat.pasActual++; carregarPas(); }, 1500);
+
+  setTimeout(() => {
+    estat.pasActual++;
+    carregarPas();
+  }, 1500);
 }
 
 function completarCapitol() {
   if (!estat.capitolsCompletats.includes(estat.capitolActual.id)) {
     estat.capitolsCompletats.push(estat.capitolActual.id);
   }
-  alert(`Capítol completat! Has guanyat: ${estat.capitolActual.premi.emoji} ${estat.capitolActual.premi.nom}`);
+
+  document.getElementById('npc-box').style.display = 'none';
+  document.getElementById('missio-card').innerHTML = `
+    <div class="completion-screen">
+      <h2>✅ ${LANG.mision_completada}</h2>
+      <p>${estat.capitolActual.premi.emoji} ${estat.capitolActual.premi.nom}</p>
+      <div class="completion-buttons">
+        <button class="btn btn-sec" onclick="tornarMapa()">${LANG.volver_mapa}</button>
+        <button class="btn" onclick="repetirCapitolActual()">${LANG.repetir}</button>
+      </div>
+    </div>
+  `;
+
+  guardarEstat();
+  carregarMapa();
+}
+
+function repetirCapitolActual() {
+  if (!estat.capitolActual) return;
+  repetirCapitol(estat.capitolActual.id);
+}
+
+function tornarMapa() {
   document.getElementById('npc-box').style.display = 'none';
   document.getElementById('missio-titol').textContent = 'Selecciona una missió al mapa';
   document.getElementById('missio-escenari').textContent = '';
   document.getElementById('missio-opcions').innerHTML = '';
   document.getElementById('missio-feedback').textContent = '';
-  guardarEstat();
-  carregarMapa();
+  document.getElementById('missio-card').innerHTML = `
+    <h3 id="missio-titol">Selecciona una missió al mapa</h3>
+    <div id="missio-escenari"></div>
+    <div id="missio-opcions"></div>
+    <div id="missio-feedback" style="text-align:center; margin:15px 0; font-weight:bold;"></div>
+  `;
+  canviarTab('mapa');
 }
 
 function guardarEstat() {
