@@ -1,4 +1,4 @@
-const CACHE_NAME = 'catlingo-v18';
+const CACHE_NAME = 'catlingo-v19';
 const urlsToCache = [
   '/',
   '/index.html',
