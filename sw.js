@@ -1,4 +1,4 @@
-const CACHE_NAME = 'catlingo-v10';
+const CACHE_NAME = 'catlingo-v12';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -8,6 +8,11 @@ const urlsToCache = [
   '/data/capitol_03_tarragona.json',
   '/data/capitol_04_lleida.json',
   '/data/capitol_05_vic.json',
+  '/data/capitol_06_tarragona.json',
+  '/data/capitol_07_girona.json',
+  '/data/capitol_08_barcelona.json',
+  '/data/capitol_09_lleida.json',
+  '/data/capitol_10_vic.json',
   '/assets/icons/icon-192.png',
   '/assets/icons/icon-512.png'
 ];
