@@ -1,4 +1,4 @@
-const CACHE_NAME = 'catlingo-v13';
+const CACHE_NAME = 'catlingo-v15';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -12,9 +12,7 @@ const urlsToCache = [
   '/data/capitol_07_girona.json',
   '/data/capitol_08_barcelona.json',
   '/data/capitol_09_lleida.json',
-  '/data/capitol_10_vic.json',
-  '/assets/icons/icon-192.png',
-  '/assets/icons/icon-512.png'
+  '/data/capitol_10_vic.json'
 ];
 
 self.addEventListener('install', event => {
@@ -22,6 +20,18 @@ self.addEventListener('install', event => {
     caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
   );
   self.skipWaiting();
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.filter(name => name !== CACHE_NAME)
+                  .map(name => caches.delete(name))
+      );
+    })
+  );
+  self.clients.claim();
 });
 
 self.addEventListener('fetch', event => {
