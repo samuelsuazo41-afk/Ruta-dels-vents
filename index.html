@@ -355,12 +355,19 @@ function iniciarRepas() {
           todasPreguntas = todasPreguntas.concat(data.passos);
           capitolsCargados++;
           if (capitolsCargados === estat.capitolsCompletats.length) {
-            todasPreguntas = [...todasPreguntas,...estat.fallades,...estat.fallades];
+            todasPreguntas = [...todasPreguntas, ...estat.fallades, ...estat.fallades];
             mostrarRepas(todasPreguntas);
           }
         });
     }
   });
+
+  // Solo ejecuta esto si NO hay capítulos completados
+  else if (estat.capitolsCompletats.length === 0) {
+    todasPreguntas = [...estat.fallades, ...estat.fallades];
+    mostrarRepas(todasPreguntas);
+  }
+}
 
   if (estat.capitolsCompletats.length === 0) {
     todasPreguntas = [...estat.fallades,...estat.fallades];
