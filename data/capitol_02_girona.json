@@ -1,0 +1,75 @@
+{
+  "id": "gir_01",
+  "passos": [
+    {
+      "npc": {"id": "anna", "nom": "Anna", "frase": "Bon dia! Et veig perdut. Busques alguna cosa?"},
+      "escenari": "Estàs al Barri Jueu de Girona. Els carrers són estrets i no hi ha senyalització.",
+      "pregunta": "Com demanes ajuda de forma educada en català?",
+      "opcions": [
+        {
+          "text": "On està el carrer?",
+          "correcte": false,
+          "feedback_ca": "Molt directe. Millor: 'Em podries indicar...'",
+          "feedback_es": "Muy directo. Mejor: '¿Podrías indicarme...'",
+          "seny": 0, "rauxa": 1, "coins": 5
+        },
+        {
+          "text": "Em podries indicar com arribar a la Catedral, si us plau?",
+          "correcte": true,
+          "feedback_ca": "Perfecte! Molt educat i clar.",
+          "feedback_es": "¡Perfecto! Muy educado y claro.",
+          "seny": 2, "rauxa": 0, "coins": 25
+        },
+        {
+          "text": "Dónde está la Catedral?",
+          "correcte": false,
+          "feedback_ca": "Aquí parlem català. Prova-ho en català.",
+          "feedback_es": "Aquí hablamos catalán. Inténtalo en catalán.",
+          "seny": 0, "rauxa": 0, "coins": 0
+        }
+      ]
+    },
+    {
+      "npc": {"id": "guia", "nom": "Guia turístic", "frase": "Si hagués sabut que vindries, t'hauria esperat a l'entrada."},
+      "escenari": "El guia parla en passat hipotètic. Ja és més avançat que Barcelona.",
+      "pregunta": "Què respones si tu també haguessis volgut arribar abans?",
+      "opcions": [
+        {
+          "text": "Jo també hagués volgut arribar abans.",
+          "correcte": true,
+          "feedback_ca": "Correcte! Condicional compost. Això és nivell B1.",
+          "feedback_es": "¡Correcto! Condicional compuesto. Esto es nivel B1.",
+          "seny": 3, "rauxa": 0, "coins": 30
+        },
+        {
+          "text": "Jo també volia arribar abans.",
+          "correcte": false,
+          "feedback_ca": "Això és passat simple. No encaixa amb 'hagués'.",
+          "feedback_es": "Eso es pretérito imperfecto. No encaja con 'hubiera'.",
+          "seny": 0, "rauxa": 1, "coins": 0
+        }
+      ]
+    },
+    {
+      "npc": {"id": "vell", "nom": "Home gran", "frase": "Això és de traca i mocador, noi!"},
+      "escenari": "Un home gran usa una expressió típica de Girona.",
+      "pregunta": "Què vol dir 'de traca i mocador'?",
+      "opcions": [
+        {
+          "text": "Molt exagerat i sorprenent.",
+          "correcte": true,
+          "feedback_ca": "Exacte! És una expressió per dir que alguna cosa és increïble.",
+          "feedback_es": "¡Exacto! Es una expresión para decir que algo es increíble.",
+          "seny": 2, "rauxa": 2, "coins": 40
+        },
+        {
+          "text": "Que porta traca i mocador.",
+          "correcte": false,
+          "feedback_ca": "Literal però incorrecte. És una expressió idiomàtica.",
+          "feedback_es": "Literal pero incorrecto. Es una expresión idiomática.",
+          "seny": 0, "rauxa": 0, "coins": 0
+        }
+      ]
+    }
+  ]
+    }
