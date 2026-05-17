@@ -1,27 +1,91 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>CATLingo - Cròniques de Catalunya</title>
+<meta name="description" content="RPG per aprendre català jugant">
+<meta name="theme-color" content="#C8102E">
+<link rel="manifest" href="/manifest.json">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a0f; color: #fff; padding-bottom: 80px; }
+.header { background: linear-gradient(135deg, #FFD700 0%, #C8102E 100%); padding: 20px; text-align: center; border-bottom: 2px solid #6B4F3A; }
+.header h1 { font-size: 22px; margin-bottom: 5px; color: #0a0a0f; font-weight: 800; }
+.coins { font-size: 18px; font-weight: bold; color: #0a0a0f; }
+.stats { font-size: 12px; color: #0a0a0f; margin-top: 5px; }
+.tab-content { display: none; padding: 20px; }
+.tab-content.active { display: block; }
+.tabs { display: flex; background: #1a1a24; position: fixed; bottom: 0; left: 0; width: 100%; border-top: 1px solid #333; z-index: 1000; }
+.tab-btn { flex: 1; padding: 12px; background: none; border: none; color: #888; font-size: 12px; cursor: pointer; }
+.tab-btn.active { color: #FFD700; background: rgba(255, 215, 0, 0.1); border-top: 2px solid #FFD700; }
+.card { background: #1a1a24; border-radius: 12px; padding: 20px; margin-bottom: 15px; border: 1px solid #2a2a35; }
+.btn { background: linear-gradient(135deg, #C8102E 0%, #A60A24 100%); color: #fff; border: 1px solid #FFD700; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 15px; }
+.opcio { background: #2a2a35; padding: 15px; margin-bottom: 10px; border-radius: 8px; cursor: pointer; }
+.capitol-card { background: linear-gradient(135deg, #1a1a24 0%, #2a2a35 100%); border: 2px solid #C8102E; border-radius: 12px; padding: 20px; margin-bottom: 15px; }
+.capitol-icona { font-size: 48px; text-align: center; margin-bottom: 10px; }
+.npc-box { background: #2a2a35; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #FFD700; }
+.npc-nom { color: #FFD700; font-weight: bold; margin-bottom: 5px; }
+.gremi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+.gremi-item { background: #1a1a24; padding: 15px; border-radius: 12px; text-align: center; border: 1px solid #2a2a35; }
+.sub-tabs { display: flex; gap: 8px; margin-bottom: 15px; }
+.sub-tab-btn { flex: 1; padding: 10px; background: #1a1a24; border: 1px solid #2a2a35; color: #888; border-radius: 8px; cursor: pointer; }
+.sub-tab-btn.active { background: #FFD700; color: #0a0a0f; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1 id="app-titol">🏴 CATLingo</h1>
+  <div class="coins" id="coins">🪙 0 <span id="text-monedes">Monedes</span></div>
+  <div class="stats" id="stats"></div>
+</div>
+
+<div id="tab-mapa" class="tab-content active">
+  <h2 id="text-mon">🗺️ Mapa de Catalunya</h2>
+  <div id="mapa-contenidor"></div>
+</div>
+
+<div id="tab-missio" class="tab-content">
+  <div id="npc-box" class="npc-box" style="display:none;">
+    <div class="npc-nom" id="npc-nom"></div>
+    <div id="npc-text"></div>
+  </div>
+  <div class="card">
+    <h3 id="missio-titol">Selecciona una missió al mapa</h3>
+    <div id="missio-escenari"></div>
+    <div id="missio-opcions"></div>
+    <div id="missio-feedback" style="text-align:center; margin:15px 0; font-weight:bold;"></div>
+  </div>
+</div>
+
+<div id="tab-gremi" class="tab-content">
+  <div class="sub-tabs">
+    <button class="sub-tab-btn active" onclick="mostrarGremi('personatges', event)">👥 Personatges</button>
+    <button class="sub-tab-btn" onclick="mostrarGremi('objectes', event)">🎒 Objectes</button>
+    <button class="sub-tab-btn" onclick="mostrarGremi('llegendes', event)">📜 Llegendes</button>
+  </div>
+  <div id="gremi-contenidor" class="gremi-grid"></div>
+</div>
+
+<div id="tab-botiga" class="tab-content">
+  <div class="card">
+    <h3 id="text-botiga">🛒 Botiga</h3>
+    <div id="botiga-contenidor" class="gremi-grid"></div>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="canviarTab('mapa', event)">🗺️ <span id="tab-mapa-txt">Món</span></button>
+  <button class="tab-btn" onclick="canviarTab('missio', event)">📜 <span id="tab-missio-txt">Missió</span></button>
+  <button class="tab-btn" onclick="canviarTab('gremi', event)">🏛️ <span id="tab-gremi-txt">Gremi</span></button>
+  <button class="tab-btn" onclick="canviarTab('botiga', event)">🛒 <span id="tab-botiga-txt">Botiga</span></button>
+</div>
+
 <script>
 const LANGS = {
-  es: {
-    app_titol: "CATLingo - Crónicas de Cataluña",
-    monedes: "Monedas",
-    tab_mapa: "Mundo", tab_missio: "Misión", tab_gremi: "Gremio", tab_botiga: "Tienda",
-    text_mon: "🗺️ Mapa de Cataluña",
-    text_botiga: "🛒 Tienda",
-    correcte: "¡Correcto!",
-    incorrecte: "Casi... Prueba con: ",
-    bloquejat: "Bloqueado",
-    entrar: "Entrar"
-  },
-  ca: {
-    app_titol: "CATLingo - Cròniques de Catalunya",
-    monedes: "Monedes",
-    tab_mapa: "Món", tab_missio: "Missió", tab_gremi: "Gremi", tab_botiga: "Botiga",
-    text_mon: "🗺️ Mapa de Catalunya",
-    text_botiga: "🛒 Botiga",
-    correcte: "Correcte!",
-    incorrecte: "Gairebé... Prova amb: ",
-    bloquejat: "Bloquejat",
-    entrar: "Entrar"
-  }
+  es: { app_titol: "CATLingo - Crónicas de Cataluña", monedes: "Monedas", tab_mapa: "Mundo", tab_missio: "Misión", tab_gremi: "Gremio", tab_botiga: "Tienda", text_mon: "🗺️ Mapa de Cataluña", text_botiga: "🛒 Tienda", entrar: "Entrar", bloquejat: "Bloqueado" },
+  ca: { app_titol: "CATLingo - Cròniques de Catalunya", monedes: "Monedes", tab_mapa: "Món", tab_missio: "Missió", tab_gremi: "Gremi", tab_botiga: "Botiga", text_mon: "🗺️ Mapa de Catalunya", text_botiga: "🛒 Botiga", entrar: "Entrar", bloquejat: "Bloquejat" }
 };
 
 let idioma = localStorage.getItem('cat_idioma') || 'es';
@@ -70,8 +134,7 @@ function canviarTab(tab, e) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
-  e.target.closest('.tab-btn').classList.add('active');
-
+  if(e) e.target.closest('.tab-btn').classList.add('active');
   if(tab === 'mapa') carregarMapa();
   if(tab === 'gremi') mostrarGremi('personatges', e);
   if(tab === 'botiga') carregarBotiga();
@@ -87,18 +150,15 @@ async function carregarCapitol(nombreArchivo) {
     canviarTab('missio', {target: {closest: () => document.querySelector('.tab-btn:nth-child(2)')}});
   } catch(e) {
     alert('Error carregant capítol: ' + e.message);
-    console.error(e);
   }
 }
 
 function carregarMapa() {
   const cont = document.getElementById('mapa-contenidor');
   cont.innerHTML = '';
-
   CAPITOLS.forEach(capitol => {
     const completat = estat.capitolsCompletats.includes(capitol.id);
     const desbloquejat = capitol.desbloquejat;
-
     const div = document.createElement('div');
     div.className = 'capitol-card' + (completat? ' completat' : '') + (!desbloquejat? ' bloquejat' : '');
     div.innerHTML = `
@@ -115,36 +175,20 @@ function carregarMapa() {
 
 function entrarCapitol(id) {
   const capitol = CAPITOLS.find(c => c.id === id);
-  if (!capitol) return;
-
-  if (capitol.archivo) {
-    carregarCapitol(capitol.archivo);
-  } else {
-    estat.capitolActual = capitol;
-    estat.pasActual = 0;
-    carregarPas();
-    canviarTab('missio', {target: {closest: () => document.querySelector('.tab-btn:nth-child(2)')}});
-  }
+  if (capitol && capitol.archivo) carregarCapitol(capitol.archivo);
 }
 
 function carregarPas() {
   if (!estat.capitolActual) return;
-
   const pas = estat.capitolActual.passos[estat.pasActual];
-  if (!pas) {
-    completarCapitol();
-    return;
-  }
-
+  if (!pas) { completarCapitol(); return; }
   document.getElementById('npc-box').style.display = 'block';
   document.getElementById('npc-nom').textContent = pas.npc.nom;
   document.getElementById('npc-text').textContent = pas.npc.frase;
   document.getElementById('missio-titol').textContent = pas.pregunta;
   document.getElementById('missio-escenari').textContent = pas.escenari;
-
   const opcionsDiv = document.getElementById('missio-opcions');
   opcionsDiv.innerHTML = '';
-
   pas.opcions.forEach((opcio, i) => {
     const div = document.createElement('div');
     div.className = 'opcio';
@@ -152,43 +196,32 @@ function carregarPas() {
     div.onclick = () => seleccionarOpcio(i);
     opcionsDiv.appendChild(div);
   });
-
   document.getElementById('missio-feedback').textContent = '';
 }
 
 function seleccionarOpcio(idx) {
   const pas = estat.capitolActual.passos[estat.pasActual];
   const opcio = pas.opcions[idx];
-
   const feedback = idioma === 'ca'? opcio.feedback_ca : opcio.feedback_es;
   document.getElementById('missio-feedback').textContent = feedback;
-
   estat.monedes += opcio.coins || 0;
   estat.seny += opcio.seny || 0;
   estat.rauxa += opcio.rauxa || 0;
-
   guardarEstat();
   actualitzarUI();
-
-  setTimeout(() => {
-    estat.pasActual++;
-    carregarPas();
-  }, 1500);
+  setTimeout(() => { estat.pasActual++; carregarPas(); }, 1500);
 }
 
 function completarCapitol() {
   if (!estat.capitolsCompletats.includes(estat.capitolActual.id)) {
     estat.capitolsCompletats.push(estat.capitolActual.id);
   }
-
   alert(`Capítol completat! Has guanyat: ${estat.capitolActual.premi.emoji} ${estat.capitolActual.premi.nom}`);
-
   document.getElementById('npc-box').style.display = 'none';
   document.getElementById('missio-titol').textContent = 'Selecciona una missió al mapa';
   document.getElementById('missio-escenari').textContent = '';
   document.getElementById('missio-opcions').innerHTML = '';
   document.getElementById('missio-feedback').textContent = '';
-
   guardarEstat();
   carregarMapa();
 }
@@ -209,15 +242,12 @@ function actualitzarUI() {
 function mostrarGremi(tab, e) {
   document.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
   if(e) e.target.classList.add('active');
-
-  const cont = document.getElementById('gremi-contenidor');
-  cont.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:#888;">Pròximament</div>`;
+  document.getElementById('gremi-contenidor').innerHTML = `<div style="grid-column:1/-1; text-align:center; color:#888;">Pròximament</div>`;
 }
 
 function carregarBotiga() {
   const cont = document.getElementById('botiga-contenidor');
   cont.innerHTML = '';
-
   BOTIGA_ITEMS.forEach(item => {
     const div = document.createElement('div');
     div.className = 'gremi-item';
@@ -232,10 +262,7 @@ function carregarBotiga() {
 }
 
 function comprar(id, preu) {
-  if (estat.monedes < preu) {
-    alert('No tens prou monedes');
-    return;
-  }
+  if (estat.monedes < preu) { alert('No tens prou monedes'); return; }
   estat.monedes -= preu;
   estat.objectes.push(id);
   guardarEstat();
@@ -243,15 +270,13 @@ function comprar(id, preu) {
   alert('Comprat!');
 }
 
-// Init
 aplicarIdioma();
 actualitzarUI();
 carregarMapa();
 
-// Registrar SW
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js');
+  navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW error:', err));
 }
 </script>
 </body>
->/html>
+</html>
