@@ -1,0 +1,55 @@
+{
+  "id": "lle_01",
+  "passos": [
+    {
+      "npc": {"id": "pages", "nom": "Pages", "frase": "Si plogués demà, no podriem segar el blat."},
+      "escenari": "Estàs a un camp de blat a la Segarra. Un pagès parla del temps.",
+      "pregunta": "Com respons si tu també et preocupes?",
+      "opcions": [
+        {
+          "text": "Jo també estaria preocupat.",
+          "correcte": true,
+          "feedback_ca": "Correcte! Condicional ben usat per una situació hipotètica.",
+          "feedback_es": "Correcto! Condicional bien usado para una situacion hipotetica.",
+          "seny": 3,
+          "rauxa": 0,
+          "coins": 40
+        },
+        {
+          "text": "Jo també estic preocupat.",
+          "correcte": false,
+          "feedback_ca": "Aixo es present. Hauria de ser condicional.",
+          "feedback_es": "Eso es presente. Deberia ser condicional.",
+          "seny": 0,
+          "rauxa": 1,
+          "coins": 0
+        }
+      ]
+    },
+    {
+      "npc": {"id": "vell", "nom": "Avi", "frase": "Aixo sempre s'ha fet aixi a la terra."},
+      "escenari": "Un avi et parla de tradicions del camp.",
+      "pregunta": "Que vol dir 'sempre s'ha fet aixi'?",
+      "opcions": [
+        {
+          "text": "Es una tradicio antiga que continua.",
+          "correcte": true,
+          "feedback_ca": "Exacte! Present perfecte per accions que venen de lluny.",
+          "feedback_es": "Exacto! Presente perfecto para acciones que vienen de lejos.",
+          "seny": 3,
+          "rauxa": 0,
+          "coins": 45
+        },
+        {
+          "text": "Es una cosa nova.",
+          "correcte": false,
+          "feedback_ca": "No, 's'ha fet' indica que porta temps fent-se.",
+          "feedback_es": "No, 'se ha hecho' indica que lleva tiempo haciendose.",
+          "seny": 0,
+          "rauxa": 0,
+          "coins": 0
+        }
+      ]
+    },
+    {
+      "npc": {"id": "ve
