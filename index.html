@@ -162,15 +162,31 @@ function canviarTab(tab, e) {
   if(tab === 'gremi') mostrarGremi('personatges', e);
   if(tab === 'botiga') carregarBotiga();
   if(tab === 'missio') carregarMissioTab();
+
+function completarCapitol() {
+  if (!estat.capitolsCompletats.includes(estat.capitolActual.id)) {
+    estat.capitolsCompletats.push(estat.capitolActual.id);
+  }
+
+  document.getElementById('npc-box').style.display = 'none';
+  
+  // Evita el error si premi no existe
+  const premi = estat.capitolActual.premi || {emoji: '🏆', nom: 'Premi'};
+  
+  document.getElementById('missio-card').innerHTML = `
+    <div class="completion-screen">
+      <h2>✅ ${LANG.mision_completada}</h2>
+      <p>${premi.emoji} ${premi.nom}</p>
+      <div class="completion-buttons">
+        <button class="btn btn-sec" onclick="tornarMapa()">${LANG.volver_mapa}</button>
+        <button class="btn" onclick="repetirCapitolActual()">${LANG.repetir}</button>
+      </div>
+    </div>
+  `;
+
+  guardarEstat();
+  carregarMapa();
 }
-
-async function carregarCapitol(nombreArchivo) {
-  try {
-    const res = await fetch(`./data/${nombreArchivo}.json`);
-    if (!res.ok) throw new Error('Archivo no encontrado');
-
-    estat.capitolActual = await res.json();
-    estat.pasActual = 0;
 
     // Resetear el HTML de misión antes de cargar
     document.getElementById('missio-card').innerHTML = `
