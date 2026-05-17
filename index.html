@@ -352,22 +352,21 @@ function iniciarRepas() {
       fetch(`./data/${capitol.archivo}.json`)
       .then(r => r.json())
       .then(data => {
-          todasPreguntas = todasPreguntas.concat(data.passos);
-          capitolsCargados++;
-          if (capitolsCargados === estat.capitolsCompletats.length) {
-            todasPreguntas = [...todasPreguntas, ...estat.fallades, ...estat.fallades];
-            mostrarRepas(todasPreguntas);
-          }
-        });
+        todasPreguntas = todasPreguntas.concat(data.passos);
+        capitolsCargados++;
+        if (capitolsCargados === estat.capitolsCompletats.length) {
+          todasPreguntas = [...todasPreguntas, ...estat.fallades, ...estat.fallades];
+          mostrarRepas(todasPreguntas);
+        }
+      });
     }
+  }); // <-- cierre del forEach
 
-    
-
-  if (estat.capitolsCompletats.length === 0) {
+  if (estat.capitolsCompletats.length === 0) { // <-- esto va aquí dentro
     todasPreguntas = [...estat.fallades,...estat.fallades];
     mostrarRepas(todasPreguntas);
   }
-}
+} // <-- cierre de la función
 
 function mostrarRepas(preguntas) {
   const cont = document.getElementById('repas-contenidor');
