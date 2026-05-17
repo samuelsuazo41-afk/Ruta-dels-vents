@@ -360,14 +360,8 @@ function iniciarRepas() {
           }
         });
     }
-  });
 
-  // Solo ejecuta esto si NO hay capítulos completados
-  else if (estat.capitolsCompletats.length === 0) {
-    todasPreguntas = [...estat.fallades, ...estat.fallades];
-    mostrarRepas(todasPreguntas);
-  }
-}
+    
 
   if (estat.capitolsCompletats.length === 0) {
     todasPreguntas = [...estat.fallades,...estat.fallades];
