@@ -107,11 +107,31 @@ const CAPITOLS = [
     nom: "Barcelona - La primera nit al Born",
     icona: "🏙️",
     desbloquejat: true,
-    desc: "Arribes a Barcelona sense saber ni un 'bon dia'. Laia et farà parlar.",
-    premi: {id:"paraula_seny", emoji:"⚖️", nom:"Paraula Ancestral: Seny"},
+    desc: "Arribes a Barcelona sense saber ni un 'bon dia'.",
+    premi: {id:"paraula_seny", emoji:"⚖️", nom:"Seny"},
     archivo: "capitol_01_barcelona"
+  },
+  {
+    id: "gir_01",
+    nom: "Girona - El Barri Jueu",
+    icona: "🏰",
+    desbloquejat: false,
+    desc: "Carrers estrets. Català més ràpid. T'hauràs de guanyar la confiança.",
+    premi: {id:"paraula_rauxa", emoji:"🔥", nom:"Rauxa"},
+    archivo: "capitol_02_girona",
+    requereix: "bcn_01"
+  },
+  {
+    id: "tar_01",
+    nom: "Tarragona - L'Amfiteatre",
+    icona: "🏛️",
+    desbloquejat: false,
+    desc: "Història romana. Passat i condicional.",
+    premi: {id:"paraula_historia", emoji:"📜", nom:"Memòria"},
+    archivo: "capitol_03_tarragona",
+    requereix: "gir_01"
   }
-];
+]
 
 const BOTIGA_ITEMS = [
   {id:"casteller", emoji:"👥", nom:"Casteller", preu:100},
