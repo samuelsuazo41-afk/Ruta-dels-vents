@@ -176,18 +176,25 @@ async function carregarCapitol(nombreArchivo) {
 function carregarMapa() {
   const cont = document.getElementById('mapa-contenidor');
   cont.innerHTML = '';
+  
   CAPITOLS.forEach(capitol => {
     const completat = estat.capitolsCompletats.includes(capitol.id);
-    const desbloquejat = capitol.desbloquejat;
+    
+    // Si no tiene 'requereix', usa desbloquejat. Si tiene, mira si ya completaste el anterior
+    let desbloquejat = capitol.desbloquejat;
+    if (capitol.requereix) {
+      desbloquejat = estat.capitolsCompletats.includes(capitol.requereix);
+    }
+    
     const div = document.createElement('div');
-    div.className = 'capitol-card' + (completat? ' completat' : '') + (!desbloquejat? ' bloquejat' : '');
+    div.className = 'capitol-card' + (completat ? ' completat' : '') + (!desbloquejat ? ' bloquejat' : '');
     div.innerHTML = `
       <div class="capitol-icona">${capitol.icona}</div>
       <h3>${capitol.nom}</h3>
       <p>${capitol.desc}</p>
-      ${completat? '✓ Completat' : ''}
-      ${desbloquejat &&!completat? `<button class="btn" onclick="entrarCapitol('${capitol.id}')">${LANG.entrar}</button>` : ''}
-      ${!desbloquejat? `<p style="color:#888; margin-top:10px;">${LANG.bloquejat}</p>` : ''}
+      ${completat ? '✓ Completat' : ''}
+      ${desbloquejat && !completat ? `<button class="btn" onclick="entrarCapitol('${capitol.id}')">${LANG.entrar}</button>` : ''}
+      ${!desbloquejat ? `<p style="color:#888; margin-top:10px;">${LANG.bloquejat}</p>` : ''}
     `;
     cont.appendChild(div);
   });
