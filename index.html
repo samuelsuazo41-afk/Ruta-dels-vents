@@ -162,33 +162,16 @@ function canviarTab(tab, e) {
   if(tab === 'gremi') mostrarGremi('personatges', e);
   if(tab === 'botiga') carregarBotiga();
   if(tab === 'missio') carregarMissioTab();
-
-function completarCapitol() {
-  if (!estat.capitolsCompletats.includes(estat.capitolActual.id)) {
-    estat.capitolsCompletats.push(estat.capitolActual.id);
-  }
-
-  document.getElementById('npc-box').style.display = 'none';
-  
-  // Evita el error si premi no existe
-  const premi = estat.capitolActual.premi || {emoji: '🏆', nom: 'Premi'};
-  
-  document.getElementById('missio-card').innerHTML = `
-    <div class="completion-screen">
-      <h2>✅ ${LANG.mision_completada}</h2>
-      <p>${premi.emoji} ${premi.nom}</p>
-      <div class="completion-buttons">
-        <button class="btn btn-sec" onclick="tornarMapa()">${LANG.volver_mapa}</button>
-        <button class="btn" onclick="repetirCapitolActual()">${LANG.repetir}</button>
-      </div>
-    </div>
-  `;
-
-  guardarEstat();
-  carregarMapa();
 }
 
-    // Resetear el HTML de misión antes de cargar
+async function carregarCapitol(nombreArchivo) {
+  try {
+    const res = await fetch(`./data/${nombreArchivo}.json`);
+    if (!res.ok) throw new Error('Archivo no encontrado');
+
+    estat.capitolActual = await res.json();
+    estat.pasActual = 0;
+
     document.getElementById('missio-card').innerHTML = `
       <h3 id="missio-titol">Selecciona una missió al mapa</h3>
       <div id="missio-escenari"></div>
@@ -312,10 +295,13 @@ function completarCapitol() {
   }
 
   document.getElementById('npc-box').style.display = 'none';
+
+  const premi = estat.capitolActual.premi || {emoji: '🏆', nom: 'Premi'};
+
   document.getElementById('missio-card').innerHTML = `
     <div class="completion-screen">
       <h2>✅ ${LANG.mision_completada}</h2>
-      <p>${estat.capitolActual.premi.emoji} ${estat.capitolActual.premi.nom}</p>
+      <p>${premi.emoji} ${premi.nom}</p>
       <div class="completion-buttons">
         <button class="btn btn-sec" onclick="tornarMapa()">${LANG.volver_mapa}</button>
         <button class="btn" onclick="repetirCapitolActual()">${LANG.repetir}</button>
@@ -333,7 +319,6 @@ function repetirCapitolActual() {
 }
 
 function tornarMapa() {
-  // Limpiar estado del capítulo actual
   estat.capitolActual = null;
   estat.pasActual = 0;
 
@@ -347,7 +332,6 @@ function tornarMapa() {
   canviarTab('mapa', null);
 }
 
-// C. Modo Repàs
 function carregarMissioTab() {
   if (!estat.capitolActual) {
     document.getElementById('missio-card').innerHTML = `
@@ -371,8 +355,8 @@ function iniciarRepas() {
     const capitol = CAPITOLS.find(c => c.id === id);
     if (capitol && capitol.archivo) {
       fetch(`./data/${capitol.archivo}.json`)
-    .then(r => r.json())
-    .then(data => {
+     .then(r => r.json())
+     .then(data => {
         todasPreguntas = todasPreguntas.concat(data.passos);
         capitolsCargados++;
         if (capitolsCargados === estat.capitolsCompletats.length) {
