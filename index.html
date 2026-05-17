@@ -116,7 +116,6 @@ const CAPITOLS = [
   { id: "tar_01", nom: "Tarragona - L'Amfiteatre", icona: "🏛️", desbloquejat: false, desc: "Història romana. Passat i condicional.", premi: {id:"paraula_historia", emoji:"📜", nom:"Memòria"}, archivo: "capitol_03_tarragona", requereix: "gir_01" },
   { id: "lle_01", nom: "Lleida - La Segarra", icona: "🌾", desbloquejat: false, desc: "Camp i pobles. Català rural i expressions de pagès.", premi: {id:"paraula_terra", emoji:"🌱", nom:"Terra"}, archivo: "capitol_04_lleida", requereix: "tar_01" },
   { id: "vic_01", nom: "Vic - El Mercat Medieval", icona: "🏪", desbloquejat: false, desc: "Comerç i regateig. Subjuntiu i imperatiu.", premi: {id:"paraula_comerc", emoji:"💰", nom:"Comerç"}, archivo: "capitol_05_vic", requereix: "lle_01" },
-
   { id: "tar_02", nom: "Tarragona - El Mercat Central", icona: "🐟", desbloquejat: false, desc: "Pretèrit imperfet vs perfet.", premi: {id:"paraula_temps", emoji:"⏳", nom:"Temps"}, archivo: "capitol_06_tarragona", requereix: "tar_01" },
   { id: "gir_02", nom: "Girona - Les Muralles", icona: "🧱", desbloquejat: false, desc: "Relatius: que, qui, on, quan.", premi: {id:"paraula_relatiu", emoji:"🔗", nom:"Relatiu"}, archivo: "capitol_07_girona", requereix: "gir_01" },
   { id: "bcn_02", nom: "Barcelona - El Raval", icona: "🌆", desbloquejat: false, desc: "Pronoms febles.", premi: {id:"paraula_pronom", emoji:"👤", nom:"Pronom"}, archivo: "capitol_08_barcelona", requereix: "bcn_01" },
@@ -130,20 +129,16 @@ const BOTIGA_ITEMS = [
   {id:"gegant", emoji:"🎭", nom:"Gegant", preu:120}
 ];
 
-// B. Seny/Rauxa afectan el diálogo
 function aplicarCondicionesSenyRauxa(pas, capitolId) {
   const pasMod = JSON.parse(JSON.stringify(pas));
-
   if (capitolId === 'vic_01' && pasMod.npc.id === 'vell' && estat.seny > 70) {
     pasMod.npc.frase = "A veure, tranquil... te ho dic a poc a poc: No compri res sense regatejar abans.";
     pasMod.pistaExtra = "Pista: 'No compri' va amb subjuntiu per consell.";
   }
-
   if (capitolId === 'gir_01' && pasMod.npc.id === 'chaval' && estat.rauxa > 70) {
     pasMod.npc.frase = "Ostres tiu, vine per aquí que t'ensenyo un lloc flipant!";
     pasMod.escenari = "El chaval et porta a un carreró secret. Desbloquejas 'Carrer Amagat'.";
   }
-
   return pasMod;
 }
 
@@ -162,7 +157,7 @@ function canviarTab(tab, e) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
-  if(e) e.target.closest('.tab-btn').classList.add('active');
+  if(e && e.target) e.target.closest('.tab-btn').classList.add('active');
   if(tab === 'mapa') carregarMapa();
   if(tab === 'gremi') mostrarGremi('personatges', e);
   if(tab === 'botiga') carregarBotiga();
@@ -177,10 +172,15 @@ async function carregarCapitol(nombreArchivo) {
     estat.capitolActual = await res.json();
     estat.pasActual = 0;
 
-    // Cambiar a la pestaña Misión primero
-    canviarTab('missio', {target: {closest: () => document.querySelector('.tab-btn:nth-child(2)')}});
+    // Resetear el HTML de misión antes de cargar
+    document.getElementById('missio-card').innerHTML = `
+      <h3 id="missio-titol">Selecciona una missió al mapa</h3>
+      <div id="missio-escenari"></div>
+      <div id="missio-opcions"></div>
+      <div id="missio-feedback" style="text-align:center; margin:15px 0; font-weight:bold;"></div>
+    `;
 
-    // Esperar 50ms para que el DOM se renderice antes de cargar el paso
+    canviarTab('missio', null);
     setTimeout(() => carregarPas(), 50);
 
   } catch(e) {
@@ -257,7 +257,6 @@ function carregarPas() {
   document.getElementById('missio-feedback').textContent = '';
 }
 
-// D. Web Speech API
 function parlar(text) {
   if ('speechSynthesis' in window) {
     speechSynthesis.cancel();
@@ -318,18 +317,18 @@ function repetirCapitolActual() {
 }
 
 function tornarMapa() {
+  // Limpiar estado del capítulo actual
+  estat.capitolActual = null;
+  estat.pasActual = 0;
+
   document.getElementById('npc-box').style.display = 'none';
-  document.getElementById('missio-titol').textContent = 'Selecciona una missió al mapa';
-  document.getElementById('missio-escenari').textContent = '';
-  document.getElementById('missio-opcions').innerHTML = '';
-  document.getElementById('missio-feedback').textContent = '';
   document.getElementById('missio-card').innerHTML = `
     <h3 id="missio-titol">Selecciona una missió al mapa</h3>
     <div id="missio-escenari"></div>
     <div id="missio-opcions"></div>
     <div id="missio-feedback" style="text-align:center; margin:15px 0; font-weight:bold;"></div>
   `;
-  canviarTab('mapa');
+  canviarTab('mapa', null);
 }
 
 // C. Modo Repàs
@@ -356,8 +355,8 @@ function iniciarRepas() {
     const capitol = CAPITOLS.find(c => c.id === id);
     if (capitol && capitol.archivo) {
       fetch(`./data/${capitol.archivo}.json`)
-     .then(r => r.json())
-     .then(data => {
+    .then(r => r.json())
+    .then(data => {
         todasPreguntas = todasPreguntas.concat(data.passos);
         capitolsCargados++;
         if (capitolsCargados === estat.capitolsCompletats.length) {
