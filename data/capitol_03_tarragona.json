@@ -1,0 +1,54 @@
+{
+  "id": "tar_01",
+  "passos": [
+    {
+      "npc": {"id": "guia", "nom": "Guia", "frase": "Si haguessis arribat abans, hauries vist l'amfiteatre ple."},
+      "escenari": "Estàs a l'Amfiteatre de Tarragona. El guia parla de coses que podrien haver passat.",
+      "pregunta": "Com respons si tu també ho lamentes?",
+      "opcions": [
+        {
+          "text": "Jo també hauria volgut veure-ho.",
+          "correcte": true,
+          "feedback_ca": "Correcte! Condicional compost ben usat.",
+          "feedback_es": "¡Correcto! Condicional compuesto bien usado.",
+          "seny": 3, "rauxa": 0, "coins": 35
+        },
+        {
+          "text": "Jo també volia veure-ho.",
+          "correcte": false,
+          "feedback_ca": "Això és passat simple. No concorda amb 'haguessis'.",
+          "feedback_es": "Eso es pretérito imperfecto. No concuerda con 'hubieras'.",
+          "seny": 0, "rauxa": 1, "coins": 0
+        }
+      ]
+    },
+    {
+      "npc": {"id": "local", "nom": "Tarragoní", "frase": "Ja m'ho havien dit, però no m'ho havia cregut."},
+      "escenari": "Parla en plusquamperfet. Temps compost del passat.",
+      "pregunta": "Què vol dir 'no m'ho havia cregut'?",
+      "opcions": [
+        {
+          "text": "Que no me lo había creído antes.",
+          "correcte": true,
+          "feedback_ca": "Exacte! Plusquamperfet = acció anterior a una altra del passat.",
+          "feedback_es": "¡Exacto! Pluscuamperfecto = acción anterior a otra del pasado.",
+          "seny": 3, "rauxa": 0, "coins": 40
+        },
+        {
+          "text": "Que no me lo creo ahora.",
+          "correcte": false,
+          "feedback_ca": "Això seria present. 'Havia' és passat.",
+          "feedback_es": "Eso sería presente. 'Había' es pasado.",
+          "seny": 0, "rauxa": 0, "coins": 0
+        }
+      ]
+    },
+    {
+      "npc": {"id": "vella", "nom": "Àvia", "frase": "Això és més vell que Matusalem, noi!"},
+      "escenari": "Una àvia usa una expressió popular de Tarragona.",
+      "pregunta": "Què vol dir 'més vell que Matusalem'?",
+      "opcions": [
+        {
+          "text": "Moltíssim de vell, antiquíssim.",
+          "correcte": true,
+          "feedback_ca": "Sí! Expressió per dir que alguna cosa és
