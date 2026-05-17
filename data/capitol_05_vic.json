@@ -32,7 +32,7 @@
       "pregunta": "Per que usa subjuntiu?",
       "opcions": [
         {
-          "text": "Perque expressa dubte i esperança.",
+          "text": "Perque expressa dubte i esperanca.",
           "correcte": true,
           "feedback_ca": "Exacte! Despres de 'espero que' va subjuntiu.",
           "feedback_es": "Exacto! Despues de 'espero que' va subjuntivo.",
@@ -78,4 +78,28 @@
     },
     {
       "npc": {"id": "vell", "nom": "Avi", "frase": "No compri res sense regatejar abans."},
-      "
+      "escenari": "Un avi et dona un consell de mercat.",
+      "pregunta": "Que vol dir?",
+      "opcions": [
+        {
+          "text": "Que no compri res sense regatejar.",
+          "correcte": true,
+          "feedback_ca": "Correcte! Negacio + subjuntiu per consell.",
+          "feedback_es": "Correcto! Negacion + subjuntivo para consejo.",
+          "seny": 3,
+          "rauxa": 0,
+          "coins": 60
+        },
+        {
+          "text": "Que compri sense mirar el preu.",
+          "correcte": false,
+          "feedback_ca": "Al contrari, diu que regategis.",
+          "feedback_es": "Al contrario, dice que regatees.",
+          "seny": 0,
+          "rauxa": 1,
+          "coins": 0
+        }
+      ]
+    }
+  ]
+}
