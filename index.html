@@ -116,7 +116,7 @@ const CAPITOLS = [
   { id: "tar_01", nom: "Tarragona - L'Amfiteatre", icona: "🏛️", desbloquejat: false, desc: "Història romana. Passat i condicional.", premi: {id:"paraula_historia", emoji:"📜", nom:"Memòria"}, archivo: "capitol_03_tarragona", requereix: "gir_01" },
   { id: "lle_01", nom: "Lleida - La Segarra", icona: "🌾", desbloquejat: false, desc: "Camp i pobles. Català rural i expressions de pagès.", premi: {id:"paraula_terra", emoji:"🌱", nom:"Terra"}, archivo: "capitol_04_lleida", requereix: "tar_01" },
   { id: "vic_01", nom: "Vic - El Mercat Medieval", icona: "🏪", desbloquejat: false, desc: "Comerç i regateig. Subjuntiu i imperatiu.", premi: {id:"paraula_comerc", emoji:"💰", nom:"Comerç"}, archivo: "capitol_05_vic", requereix: "lle_01" },
-  
+
   { id: "tar_02", nom: "Tarragona - El Mercat Central", icona: "🐟", desbloquejat: false, desc: "Pretèrit imperfet vs perfet.", premi: {id:"paraula_temps", emoji:"⏳", nom:"Temps"}, archivo: "capitol_06_tarragona", requereix: "tar_01" },
   { id: "gir_02", nom: "Girona - Les Muralles", icona: "🧱", desbloquejat: false, desc: "Relatius: que, qui, on, quan.", premi: {id:"paraula_relatiu", emoji:"🔗", nom:"Relatiu"}, archivo: "capitol_07_girona", requereix: "gir_01" },
   { id: "bcn_02", nom: "Barcelona - El Raval", icona: "🌆", desbloquejat: false, desc: "Pronoms febles.", premi: {id:"paraula_pronom", emoji:"👤", nom:"Pronom"}, archivo: "capitol_08_barcelona", requereix: "bcn_01" },
@@ -173,15 +173,16 @@ async function carregarCapitol(nombreArchivo) {
   try {
     const res = await fetch(`./data/${nombreArchivo}.json`);
     if (!res.ok) throw new Error('Archivo no encontrado');
-    
+
     estat.capitolActual = await res.json();
     estat.pasActual = 0;
-    
+
+    // Cambiar a la pestaña Misión primero
     canviarTab('missio', {target: {closest: () => document.querySelector('.tab-btn:nth-child(2)')}});
-    
-    // Dale 50ms para que el DOM se renderice
+
+    // Esperar 50ms para que el DOM se renderice antes de cargar el paso
     setTimeout(() => carregarPas(), 50);
-    
+
   } catch(e) {
     alert('Error carregant capítol: ' + e.message);
   }
@@ -355,23 +356,23 @@ function iniciarRepas() {
     const capitol = CAPITOLS.find(c => c.id === id);
     if (capitol && capitol.archivo) {
       fetch(`./data/${capitol.archivo}.json`)
-      .then(r => r.json())
-      .then(data => {
+     .then(r => r.json())
+     .then(data => {
         todasPreguntas = todasPreguntas.concat(data.passos);
         capitolsCargados++;
         if (capitolsCargados === estat.capitolsCompletats.length) {
-          todasPreguntas = [...todasPreguntas, ...estat.fallades, ...estat.fallades];
+          todasPreguntas = [...todasPreguntas,...estat.fallades,...estat.fallades];
           mostrarRepas(todasPreguntas);
         }
       });
     }
-  }); // <-- cierre del forEach
+  });
 
-  if (estat.capitolsCompletats.length === 0) { // <-- esto va aquí dentro
+  if (estat.capitolsCompletats.length === 0) {
     todasPreguntas = [...estat.fallades,...estat.fallades];
     mostrarRepas(todasPreguntas);
   }
-} // <-- cierre de la función
+}
 
 function mostrarRepas(preguntas) {
   const cont = document.getElementById('repas-contenidor');
