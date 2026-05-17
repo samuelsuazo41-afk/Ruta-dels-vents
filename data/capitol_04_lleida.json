@@ -1,0 +1,105 @@
+{
+  "id": "lle_01",
+  "passos": [
+    {
+      "npc": {"id": "pages", "nom": "Pages", "frase": "Si plogues dema, no podriem segar el blat."},
+      "escenari": "Estas a un camp de blat a la Segarra. Un pages parla del temps.",
+      "pregunta": "Com respons si tu tambe et preocupes?",
+      "opcions": [
+        {
+          "text": "Jo tambe estaria preocupat.",
+          "correcte": true,
+          "feedback_ca": "Correcte! Condicional ben usat per una situacio hipotetica.",
+          "feedback_es": "Correcto! Condicional bien usado para una situacion hipotetica.",
+          "seny": 3,
+          "rauxa": 0,
+          "coins": 40
+        },
+        {
+          "text": "Jo tambe estic preocupat.",
+          "correcte": false,
+          "feedback_ca": "Aixo es present. Hauria de ser condicional.",
+          "feedback_es": "Eso es presente. Deberia ser condicional.",
+          "seny": 0,
+          "rauxa": 1,
+          "coins": 0
+        }
+      ]
+    },
+    {
+      "npc": {"id": "vell", "nom": "Avi", "frase": "Aixo sempre s'ha fet aixi a la terra."},
+      "escenari": "Un avi et parla de tradicions del camp.",
+      "pregunta": "Que vol dir 'sempre s'ha fet aixi'?",
+      "opcions": [
+        {
+          "text": "Es una tradicio antiga que continua.",
+          "correcte": true,
+          "feedback_ca": "Exacte! Present perfecte per accions que venen de lluny.",
+          "feedback_es": "Exacto! Presente perfecto para acciones que vienen de lejos.",
+          "seny": 3,
+          "rauxa": 0,
+          "coins": 45
+        },
+        {
+          "text": "Es una cosa nova.",
+          "correcte": false,
+          "feedback_ca": "No, 's'ha fet' indica que porta temps fent-se.",
+          "feedback_es": "No, 'se ha hecho' indica que lleva tiempo haciendose.",
+          "seny": 0,
+          "rauxa": 0,
+          "coins": 0
+        }
+      ]
+    },
+    {
+      "npc": {"id": "veina", "nom": "Veina", "frase": "Si no plou aviat, es perdra la collita."},
+      "escenari": "Parla del risc de perdre la collita per la sequera.",
+      "pregunta": "Quin temps verbal usa per parlar del futur possible?",
+      "opcions": [
+        {
+          "text": "Futur amb condicional 'es perdria'.",
+          "correcte": true,
+          "feedback_ca": "Correcte! Futur hipotetic amb condicional compost.",
+          "feedback_es": "Correcto! Futuro hipotetico con condicional compuesto.",
+          "seny": 2,
+          "rauxa": 2,
+          "coins": 50
+        },
+        {
+          "text": "Present simple.",
+          "correcte": false,
+          "feedback_ca": "No, diu 'es perdra', es futur.",
+          "feedback_es": "No, dice 'se perdera', es futuro.",
+          "seny": 0,
+          "rauxa": 0,
+          "coins": 0
+        }
+      ]
+    },
+    {
+      "npc": {"id": "pages2", "nom": "Pages", "frase": "Hauries d'anar al mercat de bon mati."},
+      "escenari": "Et dona un consell per vendre la collita.",
+      "pregunta": "Que et recomana?",
+      "opcions": [
+        {
+          "text": "Que vagi al mercat aviat.",
+          "correcte": true,
+          "feedback_ca": "Si! 'Hauries de' = consell, obligacio suau.",
+          "feedback_es": "Si! 'Deberias' = consejo, obligacion suave.",
+          "seny": 3,
+          "rauxa": 0,
+          "coins": 55
+        },
+        {
+          "text": "Que no vagi al mercat.",
+          "correcte": false,
+          "feedback_ca": "No, diu que hi vagis.",
+          "feedback_es": "No, dice que vayas.",
+          "seny": 0,
+          "rauxa": 1,
+          "coins": 0
+        }
+      ]
+    }
+  ]
+}
